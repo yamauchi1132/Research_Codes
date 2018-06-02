@@ -120,7 +120,7 @@ void binary_search(Particle *p, int p_num, LaneEmden *le, int lane_num, int i)
 {
   int left = 0;
   int right = lane_num;
-  //printf("%d\n", lane_num);
+
   while(1) {
     int mid = (left + right) / 2;
     if(le[mid].m_total == p[i].m_total) {
@@ -245,7 +245,6 @@ int main(void)
   decide_mass_distribution(p, p_num, le, lane_num);
 
 //mapping particle of uniform mass coordinate r to poritorope coordinate r'
-  //bug is hear
   convert_pori_quantities(p, p_num, le, lane_num);
   check_mass_distribution(p, p_num);
  
