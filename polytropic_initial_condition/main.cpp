@@ -2,6 +2,7 @@
 #include <sys/stat.h>
 #include <math.h>
 #include <sysexits.h>
+#include <stdlib.h>
 #include "user_defined.hpp"
 #include "lane_emden.hpp"
 #include "make_and_output_data.hpp"
@@ -119,7 +120,7 @@ void binary_search(Particle *p, int p_num, LaneEmden *le, int lane_num, int i)
 {
   int left = 0;
   int right = lane_num;
-
+  //printf("%d\n", lane_num);
   while(1) {
     int mid = (left + right) / 2;
     if(le[mid].m_total == p[i].m_total) {
@@ -240,11 +241,11 @@ int main(void)
 //solve lane_emden equation
   LaneEmden *le = new LaneEmden[n];
   int lane_num = lane_emden(le, pori_num);
-  
 //make mass distribution of uniform sphere and poritirope  
   decide_mass_distribution(p, p_num, le, lane_num);
 
 //mapping particle of uniform mass coordinate r to poritorope coordinate r'
+  //bug is hear
   convert_pori_quantities(p, p_num, le, lane_num);
   check_mass_distribution(p, p_num);
  

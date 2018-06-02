@@ -3,6 +3,7 @@
 double dt = 0.05; //interval of particles in uniform sphere 
 double radius = 1.0; //radius of uniform sphere
 double pori_num = 1.5; //poritorope number
+//double pori_num = 2.5; //poritorope number
 
 double MASS = 1.989e+33; //mass of real star
 double RADIUS = 695700e+5; //* pow(2.0, 1./3.); //radius of real star
@@ -12,7 +13,7 @@ double MASS = 1.0; //mass of real star
 double RADIUS = 1.0; //radius of real star
 double G = 6.67259e-8; //gravittational constant
 */
-double eps = 10e-6; 
+double eps = 1e-6; 
 
 //define class 
 class Particle
