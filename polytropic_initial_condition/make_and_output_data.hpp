@@ -47,7 +47,7 @@ void make_data(Particle *p, int p_num, char *dir)
 
 //make head file
   fprintf(head, "+0.000000e+00 +50000.000000e+00 1000.000000e+00 1000.000000e+00\n");
-  fprintf(head, "0 0\n");
+  fprintf(head, "1 0\n");
   fprintf(head, "+2.000000e+00 +1.000000e-01\n");
   fprintf(head, "+0.000000e+00 +0.000000e+00\n");
   fprintf(head, "+1.0000000e-01\n");
