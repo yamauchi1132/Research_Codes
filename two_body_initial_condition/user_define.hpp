@@ -13,6 +13,7 @@ double v_rel_inf = 1e+6;
 //double r_rel = 80 * 695700e+5;
 //double r_rel = 20 * 695700e+5;
 double r_rel = 10 * 695700e+5;
+double pori_n = 1.5;
 
 class Particle {
 public:
