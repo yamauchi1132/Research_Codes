@@ -121,7 +121,7 @@ void output_file(Particle *p, long long int N, double *pos1, double *pos2, doubl
   }
 
   char dir[256];
-  sprintf(dir, "data_n%dk_m%.2e_m%.2e_rp%.2lf*(%.2e+%.2e)_vinf%.2e_pori%.1lf", (int)N / 10000, m1, m2, r_rel_p/(r1+r2), r1, r2,  v_rel_inf, pori_n);
+  sprintf(dir, "data_n%dk_m%.2e_m%.2e_r%.2e_r%.2e_rp%.1lf_vinf%.2e_pori%.1lf", (int)N / 10000, m1, m2, r1, r2, r_mul, v_rel_inf, pori_n);
   mkdir(dir, S_IRWXU | S_IRWXG | S_IRWXO);
 
   FILE *data;
