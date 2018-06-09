@@ -44,6 +44,44 @@ void readfile(char *filename, Particle *p, long long int N) {
   }
 }
 
+void readfile2(char *filename1, char *filename2, Particle *p, long long int N) {
+  FILE *fp = fopen(filename1, "r");
+  for(int i = 0; i < N; i++) {
+    fscanf(fp, "%lld %lld %lf", &p[i].id, &p[i].istar, &p[i].mass); //3
+    fscanf(fp, "%lf %lf %lf", &p[i].pos[0], &p[i].pos[1], &p[i].pos[2]); //6
+    fscanf(fp, "%lf %lf %lf", &p[i].vel[0], &p[i].vel[1], &p[i].vel[2]);  //9
+    fscanf(fp, "%lf %lf %lf", &p[i].acc[0], &p[i].acc[1], &p[i].acc[2]);  //12
+    fscanf(fp, "%lf %lf %lf", &p[i].uene, &p[i].alph, &p[i].alphu);  //15
+    fscanf(fp, "%lf %lf %lf", &p[i].dens, &p[i].ksr, &p[i].np);   //18
+    fscanf(fp, "%lf %lf %lf", &p[i].vsnd, &p[i].pres, &p[i].emp);  //21
+    fscanf(fp, "%lf %lf %lf", &p[i].divv, &p[i].rotv, &p[i].bswt);  //24
+    fscanf(fp, "%lf %lf %lf", &p[i].pot, &p[i].abar, &p[i].zbar);  //27
+    fscanf(fp, "%lf %lf %lf", &p[i].enuc, &p[i].vsmx, &p[i].udot); //30
+    fscanf(fp, "%lf", &p[i].dnuc);  //31
+    for(int i = 0; i < 18; i++) {  //32-49
+      fscanf(fp, "%lf", &p[i].cmps[i]);
+    }
+  }
+
+  FILE *fp2 = fopen(filename2, "r");
+  for(int i = N; i < 2*N; i++) {
+    fscanf(fp2, "%lld %lld %lf", &p[i].id, &p[i].istar, &p[i].mass); //3
+    fscanf(fp2, "%lf %lf %lf", &p[i].pos[0], &p[i].pos[1], &p[i].pos[2]); //6
+    fscanf(fp2, "%lf %lf %lf", &p[i].vel[0], &p[i].vel[1], &p[i].vel[2]);  //9
+    fscanf(fp2, "%lf %lf %lf", &p[i].acc[0], &p[i].acc[1], &p[i].acc[2]);  //12
+    fscanf(fp2, "%lf %lf %lf", &p[i].uene, &p[i].alph, &p[i].alphu);  //15
+    fscanf(fp2, "%lf %lf %lf", &p[i].dens, &p[i].ksr, &p[i].np);   //18
+    fscanf(fp2, "%lf %lf %lf", &p[i].vsnd, &p[i].pres, &p[i].emp);  //21
+    fscanf(fp2, "%lf %lf %lf", &p[i].divv, &p[i].rotv, &p[i].bswt);  //24
+    fscanf(fp2, "%lf %lf %lf", &p[i].pot, &p[i].abar, &p[i].zbar);  //27
+    fscanf(fp2, "%lf %lf %lf", &p[i].enuc, &p[i].vsmx, &p[i].udot); //30
+    fscanf(fp2, "%lf", &p[i].dnuc);  //31
+    for(int i = 0; i < 18; i++) {  //32-49
+      fscanf(fp2, "%lf", &p[i].cmps[i]);
+    }
+  }
+}
+
 //Calculation of impact parameter b
 double calc_impact_parameter(double k_e_inf) {
   //double mass_rel = m1 * m2 / (m1 + m2);
@@ -181,8 +219,12 @@ void make_initial_condition(Particle *p, long long int N)
 
 int main(int argc, char **argv)
 {
-  if(argc != 2) {
-    fprintf(stderr, "Error : Input file\n");
+  int file_num;
+  fprintf(stderr, "Input number of files : ");
+  scanf("%d", &file_num);
+
+  if((file_num == 1 && argc != 2) || (file_num == 2 && argc != 3)) {
+    fprintf(stderr, "Error : no input file\n");
     exit(1);
   }
 
@@ -203,7 +245,13 @@ int main(int argc, char **argv)
   p = new Particle[2*N];
 
   //Read file into array p
-  readfile(argv[1], p, N);
+  if(file_num == 1) {
+    readfile(argv[1], p, N);
+  }
+
+  if(file_num == 2) {
+    readfile2(argv[1], argv[2], p, N);
+  }
 
   //Make initial condition
   make_initial_condition(p, N);
