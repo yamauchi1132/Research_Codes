@@ -16,8 +16,8 @@ show_or_save = 2
 ########################################
 #set animation axis x-y or x-z
 #if 1, set this axis. if 0, not set.
-x_y = 0 #0 or 1
-x_z = 1 #0 or 1
+x_y = 1 #0 or 1
+x_z = 0 #0 or 1
 #######################################
 
 box_size = 6.0
