@@ -257,7 +257,7 @@ int main(void)
   mkdir(dir, S_IRWXU | S_IRWXG | S_IRWXO);
   make_data(p, p_num, dir);
 
-  /*
+  
 //output file 
   char dir_name[256];
   sprintf(dir_name, "output_n_%.1f", pori_num);
@@ -265,7 +265,7 @@ int main(void)
   output_sphere(p, p_num, dir_name);
   output_lane_emden(le, lane_num, dir_name);
   output_real(p, p_num, dir_name);
-  */
+
 
   delete[] p;
   delete[] le;
