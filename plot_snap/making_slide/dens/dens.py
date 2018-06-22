@@ -29,7 +29,7 @@ def plot_dens(x, y, dens):
   plt.scatter(x,y, c=dens, s=0.05, cmap="jet")
   clb = plt.colorbar()
   clb.set_label(label=r'$\rho\,[g\,cm^{-3}]$')
-  plt.clim(0,10)
+  #plt.clim(0,40)
   plt.xlim(-box_size, box_size)
   plt.ylim(-box_size, box_size)
   plt.xlabel(r'$x\,[10^{10}cm]$')
@@ -43,7 +43,7 @@ def plot_dens(x, y, dens):
     plt.show()
 
   if(show_or_save == 1):
-    plt.savefig("sph_t0000.png", dpi=1000)
+    plt.savefig("final_2.5.png", dpi=1000)
     
   plt.close()
 
@@ -59,7 +59,7 @@ if __name__ == '__main__':
       z = []
       dens = []
       # data = np.loadtxt("dat/sph_t%04d.dat" % (n));
-      data = np.loadtxt("sph_t0000.dat");
+      data = np.loadtxt("final_2.5.dat");
 
 
       tag.extend(data[:,0])
@@ -77,17 +77,5 @@ if __name__ == '__main__':
       y_tag = [[],[]]
       z_tag = [[],[]]
 
-      for i in range(len(x)):
-        if tag[i] // (len(x)/2) == 0:
-          x_tag[0].append(x[i])
-          y_tag[0].append(y[i])
-          z_tag[0].append(z[i])
-        else:
-          x_tag[1].append(x[i])
-          y_tag[1].append(y[i])
-          z_tag[1].append(z[i])
-
-      # plot_3D(x_tag,y_tag,z_tag)
-      # plot_2D(x_tag,y_tag,z_tag)
       plot_dens(x, y, dens)
       del x, y, z, dens, x_tag, y_tag, z_tag, data
