@@ -21,7 +21,7 @@ x_z = 0 #0 or 1
 #######################################
 
 box_size = 6.0
-Nnode = 501
+Nnode = 5
 
 def plot_3D(x_tag, y_tag, z_tag):
   fig = plt.figure()

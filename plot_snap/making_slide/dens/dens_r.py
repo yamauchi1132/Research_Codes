@@ -31,7 +31,7 @@ if __name__ == '__main__':
     dens_end.append(data_end[i,15])
 
   fig = plt.figure()
-  plt.plot(r_real, dens_real, label="real")
+  plt.plot(r_real, dens_real, label="polytropic sphere")
   plt.plot(r_0, dens_0, '.', label="before damping")
   plt.plot(r_end, dens_end, '.', label="after damping")
   
@@ -46,5 +46,5 @@ if __name__ == '__main__':
   plt.tight_layout()
   
   # plt.show()
-  plt.savefig("den_r.png", dpi=600)
+  plt.savefig("dens_r.png", dpi=600)
   plt.close()
