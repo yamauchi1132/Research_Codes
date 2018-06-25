@@ -69,7 +69,7 @@ if __name__ == '__main__':
     ims.append([im1]+[im2])
 
   ani = animation.ArtistAnimation(fig, ims, interval=100)
-  ani.save('x_yAndx_z.mp4', writer="ffmpeg", dpi=400)
+  ani.save('x_yAndx_z.mp4', writer="ffmpeg")
   plt.close()
 
 
