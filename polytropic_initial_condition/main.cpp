@@ -253,7 +253,7 @@ int main(void)
 
 //making data file
   char dir[256];
-  sprintf(dir, "n%dk_m%.2e_r%.2e_pori%.2lf", (int)p_num/10000, MASS, RADIUS, pori_num);
+  sprintf(dir, "n%dk_%.1lfMsun_%.1lfRsun_pori%.2lf", (int)p_num/10000, MASS/msun, RADIUS/rsun, pori_num);
   mkdir(dir, S_IRWXU | S_IRWXG | S_IRWXO);
   make_data(p, p_num, dir);
 
