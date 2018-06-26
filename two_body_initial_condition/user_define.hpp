@@ -6,9 +6,6 @@ double G = 6.67259e-8;
 
 double m1 = msun;
 double m2 = msun;
-//double r_rel_p = 10 * (695700e+5 + 695700e+5);
-//double r_rel_p = 4 * (695700e+5 + 695700e+5);
-//double r_rel_p = 2 * (695700e+5 + 695700e+5);
 double r1 = rsun;
 double r2 = rsun;
 
