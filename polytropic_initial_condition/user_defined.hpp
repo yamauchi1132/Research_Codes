@@ -9,13 +9,9 @@ double msun = 1.989e+33;
 double rsun = 695700e+5;
 
 double MASS = 10*msun; //mass of real star
-double RADIUS = 4*rsun; //* pow(2.0, 1./3.); //radius of real star
+double RADIUS = 4*rsun; //radius of real star
 double G = 6.67259e-8; //gravittational constant
-/*
-double MASS = 1.0; //mass of real star
-double RADIUS = 1.0; //radius of real star
-double G = 6.67259e-8; //gravittational constant
-*/
+
 double eps = 1e-6; 
 
 //define class 
