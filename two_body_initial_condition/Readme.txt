@@ -12,7 +12,8 @@ you can run this program as follow.
 Please be careful when you input 2 different files. Don't reverse data1 and data1 when you input.
 data1 is inputed into m1, r1, pori_num1 and data2 is into m2, r2, pori_num2 respectively which are defined in user_define.hpp
 That is
-./two_body_initial.out data2 data1 is not collect.
+./two_body_initial.out data2 data1
+is not collect.
 
 
 Data file name means,
