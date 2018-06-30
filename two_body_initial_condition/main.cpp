@@ -159,7 +159,7 @@ void output_file(Particle *p, long long int N, double *pos1, double *pos2, doubl
   }
 
   char dir[256];
-  sprintf(dir, "data_n%dk_%.1lfMsun_%.1lfMsun_%.1lfRsun_%.1lfRsun_rp%.1lfR_vinf%.2e_pori%.1lf", (int)N / 10000, m1/msun, m2/msun, r1/rsun, r2/rsun, r_mul, v_rel_inf, pori_n);
+  sprintf(dir, "data_n%dk_%.1lfMsun_%.1lfRsun_%.1lfpori_%.1lfMsun_%.1lfRsun_%.1lfpori_rp%.1lfR_vinf%.2e", (int)N / 10000, m1/msun, r1/rsun, pori_n1, m2/msun, r2/rsun, pori_n2, r_mul, v_rel_inf);
   mkdir(dir, S_IRWXU | S_IRWXG | S_IRWXO);
 
   FILE *data;
@@ -188,7 +188,7 @@ void output_file(Particle *p, long long int N, double *pos1, double *pos2, doubl
 
 
   //make header firle
-  fprintf(head, "+0.000000e+00 +1.0e+4 1.0e+3 1.0e+3\n");
+  fprintf(head, "+0.000000e+00 +1.0e+6 1.0e+4 1.0e+4\n");
   fprintf(head, "0 0\n");
   fprintf(head, "+2.000000e+00 +1.000000e-01\n");
   fprintf(head, "+0.000000e+00 +0.000000e+00\n");
