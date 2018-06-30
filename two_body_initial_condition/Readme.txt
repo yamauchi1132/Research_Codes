@@ -10,7 +10,8 @@ you can run this program as follow.
 ###############################################################################
 
 Please be careful when you input 2 different files. Don't reverse data1 and data2 in case2.
-data1 is inputed into m1, r1, pori_num1 and data2 is into m2, r2, pori_num2, which are defined in user_define.hpp. So you must edit user_define.hpp so that there is no contradiction.
+data1 must be same values of m1, r1, pori_num1, and data2 must be same values of m2, r2, pori_num2, which are defined in user_define.hpp.
+So you must edit m1, r1, pori_num1, m2, r2, pori_num2 in user_define.hpp so that there is no contradiction.
 That is
 ./two_body_initial.out data2 data1
 is not collect and will be a delicate result.
