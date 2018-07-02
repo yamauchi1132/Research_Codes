@@ -1,3 +1,3 @@
 # Research_Codes
-This codes are made by yamauchi and used personally.
+These codes are made by Yamuchi and used personally in my research work.
 
