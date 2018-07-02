@@ -1,9 +1,9 @@
 #pragma once
 
-//////you need to change////
+//////// you need to set ////////
 double m_mul = 10.0;
 double r_mul = 4.0;
-////////////////////////////
+/////////////////////////////////
 
 double v_mul = sqrt(m_mul/r_mul);
 
