@@ -47,9 +47,15 @@ void change_scale(Particle *p, long long int N) {
   mkdir(dir, S_IRWXU | S_IRWXG | S_IRWXO);
 
   FILE *data;
+  FILE *head;
   char data_name[256];
+  char head_name[256];
+
   sprintf(data_name, "%s/final.dat", dir);
+  sprintf(head_name, "%s/final.head", dir);
+
   data = fopen(data_name, "w");
+  head = fopen(head_name, "w");
 
   for(int i = 0; i < N; i++) {
     fprintf(data, "%lld %lld %e %e %e %e %e %e %e %e %e %e %e",
@@ -63,6 +69,14 @@ void change_scale(Particle *p, long long int N) {
     }
     fprintf(data, "\n");
   }
+
+  //make header firle
+  fprintf(head, "+0.000000e+00 +1.0e+4 1.0e+3 1.0e+4\n");
+  fprintf(head, "0 0\n");
+  fprintf(head, "+2.000000e+00 +1.000000e-01\n");
+  fprintf(head, "+0.000000e+00 +0.000000e+00\n");
+  fprintf(head, "+1.0000000e-01\n");
+  fprintf(head, "%lld\n", N);
 }
 
 int main(int argc, char **argv) {
