@@ -37,7 +37,31 @@ void change_scale(Particle *p, long long int N) {
     p[i].vel[1] *= v_mul;
     p[i].vel[2] *= v_mul;
 
+    p[i].uene *= uene_mul;
 
+    p[i].ksr *= r_mul;
+  }
+
+  char dir[256];
+  sprintf(dir, "n%dk_%.1lfMsun_%.1lfRsun_pori%.1lf_ScaleChange", (int)N / 10000, m_mul, r_mul, pori_num);
+  mkdir(dir, S_IRWXU | S_IRWXG | S_IRWXO);
+
+  FILE *data;
+  char data_name[256];
+  sprintf(data_name, "%s/final.dat", dir);
+  data = fopen(data_name, "w");
+
+  for(int i = 0; i < N; i++) {
+    fprintf(data, "%lld %lld %e %e %e %e %e %e %e %e %e %e %e",
+      p[i].id, p[i].istar, p[i].mass, p[i].pos[0], //4
+      p[i].pos[1], p[i].pos[2], p[i].vel[0], p[i].vel[1], //8
+      p[i].vel[2], p[i].uene, p[i].alph, p[i].alphu, p[i].ksr); //13
+
+    for(int k = 0; k < 13; k++) {
+      p[i].cmps[k] = (k==1 || k==2) ? 5.0e-1 : 0;
+      fprintf(data, " %e", p[i].cmps[k]);  //14~26
+    }
+    fprintf(data, "\n");
   }
 }
 
