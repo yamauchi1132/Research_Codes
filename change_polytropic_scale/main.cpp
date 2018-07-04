@@ -25,23 +25,7 @@ void readfile(char *filename, Particle *p, long long int N) {
   }
 }
 
-void change_scale(Particle *p, long long int N) {
-  for(int i = 0; i < N; i++) {
-    p[i].mass *= m_mul;
-
-    p[i].pos[0] *= r_mul;
-    p[i].pos[1] *= r_mul;
-    p[i].pos[2] *= r_mul;
-
-    p[i].vel[0] *= v_mul;
-    p[i].vel[1] *= v_mul;
-    p[i].vel[2] *= v_mul;
-
-    p[i].uene *= uene_mul;
-
-    p[i].ksr *= r_mul;
-  }
-
+void making_data_simulation(Particle *p, long long int N) {
   char dir[256];
   sprintf(dir, "n%dk_%.1lfMsun_%.1lfRsun_pori%.1lf_ScaleChange", (int)N / 10000, m_mul, r_mul, pori_num);
   mkdir(dir, S_IRWXU | S_IRWXG | S_IRWXO);
@@ -77,6 +61,56 @@ void change_scale(Particle *p, long long int N) {
   fprintf(head, "+0.000000e+00 +0.000000e+00\n");
   fprintf(head, "+1.0000000e-01\n");
   fprintf(head, "%lld\n", N);
+}
+
+void making_data(Particle *p, long long int N) {
+  char dir[256];
+  sprintf(dir, "snap_n%dk_%.1lfMsun_%.1lfRsun_pori%.1lf_ScaleChange", (int)N / 10000, m_mul, r_mul, pori_num);
+  mkdir(dir, S_IRWXU | S_IRWXG | S_IRWXO);
+
+  FILE *data;
+  char data_name[256];
+  sprintf(data_name, "%s/final.data", dir);
+  data = fopen(data_name, "w");
+
+  for(int i = 0; i < N; i++) {
+    fprintf(data, "%lld %lld %lf", p[i].id, p[i].istar, p[i].mass); //3
+    fprintf(data, " %lf %lf %lf", p[i].pos[0], p[i].pos[1], p[i].pos[2]); //6
+    fprintf(data, " %lf %lf %lf", p[i].vel[0], p[i].vel[1], p[i].vel[2]);  //9
+    fprintf(data, " %lf %lf %lf", p[i].acc[0], p[i].acc[1], p[i].acc[2]);  //12
+    fprintf(data, " %lf %lf %lf", p[i].uene, p[i].alph, p[i].alphu);  //15
+    fprintf(data, " %lf %lf %lf", p[i].dens, p[i].ksr, p[i].np);   //18
+    fprintf(data, " %lf %lf %lf", p[i].vsnd, p[i].pres, p[i].emp);  //21
+    fprintf(data, " %lf %lf %lf", p[i].divv, p[i].rotv, p[i].bswt);  //24
+    fprintf(data, " %lf %lf %lf", p[i].pot, p[i].abar, p[i].zbar);  //27
+    fprintf(data, " %lf %lf %lf", p[i].enuc, p[i].vsmx, p[i].udot); //30
+    fprintf(data, " %lf", p[i].dnuc);  //31
+    for(int i = 0; i < 18; i++) {  //32-49
+      fprintf(data, " %lf", p[i].cmps[i]);
+    }
+    fprintf(data, "\n");
+  }
+}
+
+void change_scale(Particle *p, long long int N) {
+  for(int i = 0; i < N; i++) {
+    p[i].mass *= m_mul;
+
+    p[i].pos[0] *= r_mul;
+    p[i].pos[1] *= r_mul;
+    p[i].pos[2] *= r_mul;
+
+    p[i].vel[0] *= v_mul;
+    p[i].vel[1] *= v_mul;
+    p[i].vel[2] *= v_mul;
+
+    p[i].uene *= uene_mul;
+
+    p[i].ksr *= r_mul;
+  }
+
+  // making_data_simulation(p, N);
+  making_data(p, N);
 }
 
 int main(int argc, char **argv) {
