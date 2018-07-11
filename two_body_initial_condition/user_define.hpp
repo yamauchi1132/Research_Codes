@@ -13,7 +13,7 @@ double m2 = 10*msun;
 double r2 = 4*rsun;
 double pori_n2 = 1.5;
 
-double r_mul = 1.0;
+double r_mul = 1.2;
 double v_rel_inf = 1e+6;
 double r_rel = 10 * r1;
 /////////////////////////////////
