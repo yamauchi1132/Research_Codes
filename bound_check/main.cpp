@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "user_define.hpp"
+#include "class.hpp"
 
 void readfile(char *filename, Particle *p, long long int N) {
   FILE *fp = fopen(filename, "r");
@@ -44,8 +44,9 @@ int main(int argc, char **argv) {
 
   Particle *p;
   p = new Particle[N];
-
+ 
   readfile(argv[1], p, N);
+  
 
   return 0;
 }
