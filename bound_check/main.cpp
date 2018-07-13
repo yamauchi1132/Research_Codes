@@ -25,37 +25,37 @@ void readfile(char *filename, Particle *p, long long int N) {
 
 void quick_sort(Particle *p, int left, int right)
 {
-  int i = left;  
-  int j = right;
-  double pivot = p[(left+right)/2].id;
+	int i = left;  
+	int j = right;
+	double pivot = p[(left+right)/2].id;
 
-  while(1) {
-    while (p[i].id < pivot) {
-      i++;
-    }
+	while(1) {
+		while (p[i].id < pivot) {
+			i++;
+		}
 
-    while (pivot < p[j].id) {
-      j--;
-    }
+		while (pivot < p[j].id) {
+			j--;
+		}
 
-    if (i >= j) {
-      break;
-    }
+		if (i >= j) {
+			break;
+		}
 
-    Particle tmp = p[i];
-    p[i] = p[j];
-    p[j] = tmp;
+		Particle tmp = p[i];
+		p[i] = p[j];
+		p[j] = tmp;
 
-    i++;
-    j--;
-  }
+		i++;
+		j--;
+	}
 
-  if (left < i-1) {
-    quick_sort(p, left, i-1);
-  }
-  if (j+1 < right) {
-    quick_sort(p, j+1, right);
-  }
+	if (left < i-1) {
+		quick_sort(p, left, i-1);
+	}
+	if (j+1 < right) {
+		quick_sort(p, j+1, right);
+	}
 }
 
 void calc_point_physics(Particle *p, long long int N, double *point_m, double (*point_pos)[2], double (*point_vel)[2]) {
@@ -64,6 +64,7 @@ void calc_point_physics(Particle *p, long long int N, double *point_m, double (*
 	double pos_sum[2][2];
 	double vel_sum[2][2];
 	
+	//calc pos and vel which are weighted dens
 	for(int i = 0; i < N/2; i++) {
 		row1_sum += p[i].dens;
 		pos_sum[0][0] += p[i].dens * p[i].pos[0];
@@ -79,6 +80,7 @@ void calc_point_physics(Particle *p, long long int N, double *point_m, double (*
 		vel_sum[1][1] += p[i].dens * p[i].vel[1];
 	}
 	
+  //calc point pos and vel
 	point_pos[0][0] = pos_sum[0][0] / row1_sum;
 	point_pos[0][1] = pos_sum[0][1] / row1_sum;
 	point_pos[1][0] = pos_sum[1][0] / row2_sum;
@@ -89,6 +91,7 @@ void calc_point_physics(Particle *p, long long int N, double *point_m, double (*
 	point_vel[1][0] = vel_sum[1][0] / row2_sum;
 	point_vel[1][1] = vel_sum[1][1] / row2_sum;
 
+  //calc point mass to sum particle mass which exists in < 2R
 	for(int i = 0; i < N/2; i++) {
 		double dx = p[i].pos[0]-point_pos[0][0];
 		double dy = p[i].pos[1]-point_pos[0][1];
@@ -98,7 +101,6 @@ void calc_point_physics(Particle *p, long long int N, double *point_m, double (*
 			point_m[0] += p[i].mass;
 		}
 	}
-	
 	for(int i = N/2; i < N; i++) {
 		double dx = p[i].pos[0]-point_pos[1][0];
 		double dy = p[i].pos[1]-point_pos[1][1];
@@ -108,7 +110,27 @@ void calc_point_physics(Particle *p, long long int N, double *point_m, double (*
 			point_m[1] += p[i].mass;
 		}
 	}
-	//fprintf(stdout , "%e %e %e %e %e %e\n", point_pos[0][0], point_pos[0][1], point_pos[1][0], point_pos[1][1], point_m[0], point_m[1]);
+	fprintf(stderr , "mass : %e %e\n", point_m[0], point_m[1]);
+	fprintf(stderr , "pos : %e %e %e %e\n", point_pos[0][0], point_pos[0][1], point_pos[1][0], point_pos[1][1]);
+	fprintf(stderr , "vel : %e %e %e %e\n", point_vel[0][0], point_vel[0][1], point_vel[1][0], point_vel[1][1]);
+}
+
+void calc_energy(double *point_m, double (*point_pos)[2], double (*point_vel)[2]) {
+	double vel1_2 = point_vel[0][0]*point_vel[0][0] + point_vel[0][1]*point_vel[0][1];
+	double vel2_2 = point_vel[1][0]*point_vel[1][0] + point_vel[1][1]*point_vel[1][1];
+	double k_e = 0.5*point_m[0]*vel1_2 + 0.5*point_m[1]*vel2_2;
+
+	double dx = point_pos[0][0] - point_pos[1][0];
+	double dy = point_pos[0][1] - point_pos[1][1];
+	double p_e = (G*point_m[0]*point_m[1]) / sqrt(dx*dx + dy*dy);
+
+	double ene = k_e - p_e;
+	fprintf(stderr, "total ene : %e\n", ene);
+	if(ene < 0) {
+		fprintf(stderr, "Bound!\n");
+	} else {
+		fprintf(stderr, "Not bound!\n");
+	}
 }
 
 int main(int argc, char **argv) {
@@ -141,8 +163,10 @@ int main(int argc, char **argv) {
 	double point_vel[2][2];
 	calc_point_physics(p, N, point_m, point_pos, point_vel);
 
+	calc_energy(point_m, point_pos, point_vel);
+
 	for(int i = 0; i < N/2; i++) {
-		fprintf(stdout , "%lld %lf %lf\n", p[i].id, p[i].pos[0], p[i].pos[1]);
+		//fprintf(stdout , "%lld %lf %lf\n", p[i].id, p[i].pos[0], p[i].pos[1]);
 	}
 
 	return 0;
