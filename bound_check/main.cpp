@@ -99,8 +99,6 @@ void calc_point_physics(Particle *p, long long int N, double *point_m, double (*
   point_vel[1][1] = vel_sum[1][1] / row2_sum;
 
   //calc point mass to sum particle mass which exists in < 2R
-  //int count_1 = 0;
-  //int count_2 = 0;
   for(int i = 0; i < N/2; i++) {
     double dx = p[i].pos[0] - point_pos[0][0];
     double dy = p[i].pos[1] - point_pos[0][1];
@@ -108,9 +106,6 @@ void calc_point_physics(Particle *p, long long int N, double *point_m, double (*
     double r = sqrt(r_2);
     if(r < 2*R1) {
       point_m[0] += p[i].mass;
-      //vel_sum[0][0] += p[i].vel[0];
-      //vel_sum[0][1] += p[i].vel[1];
-      //count_1++;
     }
   }
   for(int i = N/2; i < N; i++) {
@@ -120,16 +115,8 @@ void calc_point_physics(Particle *p, long long int N, double *point_m, double (*
     double r = sqrt(r_2);
     if(r < 2*R2) {
       point_m[1] += p[i].mass;
-      //vel_sum[1][0] += p[i].vel[0];
-      //vel_sum[1][1] += p[i].vel[1];
-      //count_2++;
     }
   }
-
-  //point_vel[0][0] =vel_sum[0][0] / count_1; 
-  //point_vel[0][1] =vel_sum[0][1] / count_1; 
-  //point_vel[1][0] =vel_sum[1][0] / count_2; 
-  //point_vel[1][1] =vel_sum[1][1] / count_2; 
 
   fprintf(stderr , "mass : %e %e\n", point_m[0], point_m[1]);
   fprintf(stderr , "pos : %e %e %e %e\n", point_pos[0][0], point_pos[0][1], point_pos[1][0], point_pos[1][1]);
@@ -187,9 +174,10 @@ int main(int argc, char **argv) {
 
   calc_energy(point_m, point_pos, point_vel);
 
+  /*
   for(int i = N/2; i < N; i++) {
-    //fprintf(stdout , "%lld %lf %lf\n", p[i].id, p[i].pos[0], p[i].pos[1]);
+    fprintf(stdout , "%lld %lf %lf\n", p[i].id, p[i].pos[0], p[i].pos[1]);
   }
-
+  */
   return 0;
 }
