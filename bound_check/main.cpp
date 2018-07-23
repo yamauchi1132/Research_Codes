@@ -166,6 +166,7 @@ int main(int argc, char **argv) {
 
   readfile(argv[1], p, N);
   //quick_sort(p, 0, N-1);
+  fprintf(stdout, "R1 = %.1lfRsun, R2 = %.1lfRsun\n\n", R1/rsun, R2/rsun);
 
   double point_m[2];
   double point_pos[2][2];
