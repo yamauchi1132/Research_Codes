@@ -122,7 +122,8 @@ void calc_point_physics(Particle *p, long long int N, double *point_m, double (*
   fprintf(stderr , "mass : %e %e\n", point_m[0], point_m[1]);
   fprintf(stderr , "pos : %e %e %e %e\n", point_pos[0][0], point_pos[0][1], point_pos[1][0], point_pos[1][1]);
   fprintf(stderr , "vel : %e %e %e %e\n", point_vel[0][0], point_vel[0][1], point_vel[1][0], point_vel[1][1]);
-  //fprintf(stdout, "%lf %lf\n", point_pos[1][0], point_pos[1][1]);
+  fprintf(stdout, "%e %e %e %e %e %e %e %e\n", point_pos[0][0], point_pos[0][1], point_pos[1][0], point_pos[1][1],
+                                               point_vel[0][0], point_vel[0][1], point_vel[1][0], point_vel[1][1]);
 }
 
 void calc_energy(double *point_m, double (*point_pos)[2], double (*point_vel)[2]) {
@@ -166,8 +167,8 @@ int main(int argc, char **argv) {
   p = new Particle[N];
 
   readfile(argv[1], p, N);
-  //quick_sort(p, 0, N-1);
-  fprintf(stdout, "R1 = %.1lfRsun, R2 = %.1lfRsun\n\n", R1/rsun, R2/rsun);
+  quick_sort(p, 0, N-1);
+  fprintf(stderr, "R1 = %.1lfRsun, R2 = %.1lfRsun\n\n", R1/rsun, R2/rsun);
 
   double point_m[2];
   double point_pos[2][2];
