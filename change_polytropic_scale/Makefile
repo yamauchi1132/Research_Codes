@@ -1,5 +1,5 @@
 MAIN = main.cpp
-HPP = user_define.hpp
+HPP = user_define.hpp class.hpp
 
 change_scale.out:$(MAIN) $(HPP)
 	g++ -Wall -O3 -o change_scale.out $(MAIN) -lm

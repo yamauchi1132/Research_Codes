@@ -3,6 +3,7 @@
 #include <math.h>
 #include <sysexits.h>
 #include <stdlib.h>
+#include "class.hpp"
 #include "user_defined.hpp"
 #include "lane_emden.hpp"
 #include "make_and_output_data.hpp"

@@ -3,7 +3,9 @@
 #include <math.h>
 #include <sysexits.h>
 #include <sys/stat.h>
+#include "class.hpp"
 #include "user_define.hpp"
+
 
 //Read file and input same infomation into array p[1:N] and p[N:2*N] in order to make two body 
 void readfile(char *filename, Particle *p, long long int N) {

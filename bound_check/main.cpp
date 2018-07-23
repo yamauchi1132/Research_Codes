@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include "class.hpp"
 #include "user_define.hpp"
 
 void readfile(char *filename, Particle *p, long long int N) {

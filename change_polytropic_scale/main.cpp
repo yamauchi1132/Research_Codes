@@ -3,6 +3,7 @@
 #include <math.h>
 #include <sysexits.h>
 #include <sys/stat.h>
+#include "class.hpp"
 #include "user_define.hpp"
 
 void readfile(char *filename, Particle *p, long long int N) {
