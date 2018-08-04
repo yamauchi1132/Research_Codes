@@ -122,8 +122,7 @@ void calc_point_physics(Particle *p, long long int N, double *point_m, double (*
   fprintf(stderr , "mass : %e %e\n", point_m[0], point_m[1]);
   fprintf(stderr , "pos : %e %e %e %e\n", point_pos[0][0], point_pos[0][1], point_pos[1][0], point_pos[1][1]);
   fprintf(stderr , "vel : %e %e %e %e\n", point_vel[0][0], point_vel[0][1], point_vel[1][0], point_vel[1][1]);
-  fprintf(stdout, "%e %e %e %e %e %e %e %e\n", point_pos[0][0], point_pos[0][1], point_pos[1][0], point_pos[1][1],
-                                               point_vel[0][0], point_vel[0][1], point_vel[1][0], point_vel[1][1]);
+  fprintf(stdout, "%e %e %e %e %e %e %e %e\n", point_pos[0][0], point_pos[0][1], point_pos[1][0], point_pos[1][1], point_vel[0][0], point_vel[0][1], point_vel[1][0], point_vel[1][1]);
 }
 
 void calc_energy(double *point_m, double (*point_pos)[2], double (*point_vel)[2]) {
@@ -177,10 +176,8 @@ int main(int argc, char **argv) {
 
   calc_energy(point_m, point_pos, point_vel);
 
-  /*
-  for(int i = N/2; i < N; i++) {
-    fprintf(stdout , "%lld %lf %lf\n", p[i].id, p[i].pos[0], p[i].pos[1]);
+  for(int i = 0; i < N; i++) {
+    //fprintf(stdout , "%lld %lf %lf\n", p[i].id, p[i].pos[0], p[i].pos[1]);
   }
-  */
   return 0;
 }
