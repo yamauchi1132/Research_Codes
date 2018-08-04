@@ -79,16 +79,22 @@ def calc_energy(p):
 def check_energy_error(time_data, max_time):
 	ene_init = time_data[0,1]
 	max_ene_error = 0.
+	time = 0
 	for i in range(len(time_data)):
-		if(time_data[i,0] == max_time):
+		if(time_data[i,0] >= max_time):
 			ene_error_end = abs(time_data[i,1] - ene_init)
+			time_end = time_data[i,0]
+			if(ene_error_end >= max_ene_error):
+				max_ene_error = ene_error_end
+				time_max = time_data[i,0]
 			break
 
 		ene_error = abs(time_data[i,1] - ene_init)
 		if(ene_error > max_ene_error):
 			max_ene_error = ene_error
+			time_max = time_data[i,0]
 
-	return max_ene_error, ene_error_end
+	return max_ene_error, time_max, ene_error_end, time_end
 
 def calc_energy_difference(p_s, p_f):
 	ene_s = calc_energy(p_s)
@@ -123,12 +129,12 @@ if __name__ == '__main__':
 
 	max_timestep = time_data[len(time_data)-1,0]
 	if(len(args) > 4):
-		max_timestep = args[4]
+		max_timestep = float(args[4])
 
 	ene_diff = calc_energy_difference(p_s, p_f)
-	max_ene_error, ene_error_end = check_energy_error(time_data, max_timestep)
+	max_ene_error, max_time, ene_error_end, end_time = check_energy_error(time_data, max_timestep)
 	ene_error_rate = (ene_error_end / ene_diff) * 100
 
-	sys.stderr.write('\nMax Energy Error(|E_m|) : %e\n' %max_ene_error)
-	sys.stderr.write('Energy Error Of End(|E_e|) : %e\n\n' %ene_error_end)
+	sys.stderr.write('\nMax Energy Error(|E_m|) : %e, Time : %lf\n' %(max_ene_error, max_time))
+	sys.stderr.write('Energy Error Of End(|E_e|) : %e, Time : %lf\n\n' %(ene_error_end, end_time))
 	sys.stderr.write('Energy Error Rate(E_r = |E_e / E_d|): %.1lf per\n\n' %ene_error_rate)
