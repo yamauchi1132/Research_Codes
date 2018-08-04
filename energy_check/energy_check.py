@@ -76,6 +76,20 @@ def calc_energy(p):
 	ene = k_e - p_e
 	return ene
 
+def check_energy_error(time_data, max_time):
+	ene_init = time_data[0,1]
+	max_ene_error = 0.
+	for i in range(len(time_data)):
+		if(time_data[i,0] == max_time):
+			ene_error_end = abs(time_data[i,1] - ene_init)
+			break
+
+		ene_error = abs(time_data[i,1] - ene_init)
+		if(ene_error > max_ene_error):
+			max_ene_error = ene_error
+
+	return max_ene_error, ene_error_end
+
 def calc_energy_difference(p_s, p_f):
 	ene_s = calc_energy(p_s)
 	ene_f = calc_energy(p_f)
@@ -83,7 +97,7 @@ def calc_energy_difference(p_s, p_f):
 
 	sys.stderr.write('\nTotal Energy Of Start(E_s) : %e\n' %ene_s)
 	sys.stderr.write('Total Energy Of End(E_e) : %e\n' %ene_f)
-	sys.stderr.write('Energy Differece(dE = |E_s - E_e|) : %e\n' %ene_diff)
+	sys.stderr.write('Energy Differece(E_d = |E_s - E_e|) : %e\n' %ene_diff)
 
 	return ene_diff
 
@@ -96,7 +110,7 @@ if __name__ == '__main__':
 
 	data_s = np.loadtxt(args[1])
 	data_f = np.loadtxt(args[2])
-	data_time = np.loadtxt(args[3], usecols=(2,4))
+	time_data = np.loadtxt(args[3], usecols=(2,4))
 
 	p_s = [Particle() for i in range(len(data_s))]
 	p_f = [Particle() for i in range(len(data_f))]
@@ -106,11 +120,15 @@ if __name__ == '__main__':
 
 	p_s.sort(key=operator.attrgetter("p_id"))
 	p_f.sort(key=operator.attrgetter("p_id"))
-	
-	'''
-	for i in range(int(len(p_s)//2)):
-		print('%d %e %e %e %e' % (p_s[i].p_id, p_s[i].mass, p_s[i].posx, p_s[i].posy, p_s[i].dens))
-		print('%d %e %e %e %e' % (p_f[i].p_id, p_f[i].mass, p_f[i].posx, p_f[i].posy, p_s[i].dens))
-		pass
-	'''
+
+	max_timestep = time_data[len(time_data)-1,0]
+	if(len(args) > 4):
+		max_timestep = args[4]
+
 	ene_diff = calc_energy_difference(p_s, p_f)
+	max_ene_error, ene_error_end = check_energy_error(time_data, max_timestep)
+	ene_error_rate = (ene_error_end / ene_diff) * 100
+
+	sys.stderr.write('\nMax Energy Error(|E_m|) : %e\n' %max_ene_error)
+	sys.stderr.write('Energy Error Of End(|E_e|) : %e\n\n' %ene_error_end)
+	sys.stderr.write('Energy Error Rate(E_r = |E_e / E_d|): %.1lf per\n\n' %ene_error_rate)
