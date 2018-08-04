@@ -1,48 +1,23 @@
 import sys
 import numpy as np
 import operator
-import pandas
+import math
 from user_define import Particle
+from user_define import readfile
 
+rsun = 695700e+5
 G = 6.67259e-8
 
-def readfile(data, p):
-	for i in range(len(data)):
-		p[i].p_id = data[i,0] 
-		p[i].istar = data[i,1]
-		p[i].mass = data[i,2]
-		p[i].posx = data[i,3]
-		p[i].posy = data[i,4]
-		p[i].posz = data[i,5]
-		p[i].velx = data[i,6]
-		p[i].vely = data[i,7]
-		p[i].velz = data[i,8]
-		p[i].accx = data[i,9]
-		p[i].accy = data[i,10]
-		p[i].accz = data[i,11]
-		p[i].uene = data[i,12]
-		p[i].dalph = data[i,13]
-		p[i].alphu = data[i,14]
-		p[i].dens = data[i,15]
-		p[i].ksr = data[i,16]
-		p[i].np = data[i,17]
-		p[i].vsnd = data[i,18]
-		p[i].pres = data[i,19]
-		p[i].emp = data[i,20]
-		p[i].divv = data[i,21]
-		p[i].rotv = data[i,22]
-		p[i].bswt = data[i,23]
-		p[i].pot = data[i,24]
-		p[i].abar = data[i,25]
-		p[i].zbar = data[i,26]
-		p[i].enuc = data[i,27]
-		p[i].vsmx = data[i,28]
-		p[i].udot = data[i,29]
-		p[i].dnuc = data[i,30]
-		for j in range(18):
-			p[i].cmps[j] = data[i, 31+j]
-		
-def calc_point_energy(p):
+####### you need to set #########
+R1 = 1.0 * rsun
+R2 = 1.0 * rsun
+# R1 = 4.0 * rsun
+# R2 = 4.0 * rsun
+# R1 = 17.2 * rsun
+# R2 = 17.2 * rsun
+#################################
+
+def calc_energy(p):
 	row1_sum = 0.
 	row2_sum = 0.
 	pos_sum = np.array([0.,0.,0.,0.]).reshape(2,2)
@@ -72,9 +47,45 @@ def calc_point_energy(p):
 	point_vel2_x = vel_sum[1][0] / row2_sum;
 	point_vel2_y = vel_sum[1][1] / row2_sum;
 
+	point_m1 = 0.
+	point_m2 = 0.
+	for i in range(int(len(p)//2)):
+		dx = p[i].posx - point_pos1_x
+		dy = p[i].posy - point_pos1_y
+		r_2 = dx*dx + dy*dy
+		r = math.sqrt(r_2)
+		if(r < 2*R1):
+			point_m1 += p[i].mass
+
+	for i in range(int(len(p)//2), len(p)):
+		dx = p[i].posx - point_pos2_x
+		dy = p[i].posy - point_pos2_y
+		r_2 = dx*dx + dy*dy
+		r = math.sqrt(r_2)
+		if(r < 2*R2):
+			point_m2 += p[i].mass
+
+	vel1_2 = point_vel1_x*point_vel1_x + point_vel1_y*point_vel1_y
+	vel2_2 = point_vel2_x*point_vel2_x + point_vel2_y*point_vel2_y
+	k_e = 0.5*point_m1*vel1_2 + 0.5*point_m2*vel2_2
+
+	dx = point_pos1_x - point_pos2_x
+	dy = point_pos1_y - point_pos2_y
+	p_e = (G*point_m1*point_m2) / math.sqrt(dx*dx + dy*dy)
+
+	ene = k_e - p_e
+	return ene
 
 def calc_energy_difference(p_s, p_f):
 	ene_s = calc_energy(p_s)
+	ene_f = calc_energy(p_f)
+	ene_diff = abs(ene_f - ene_s)
+
+	sys.stderr.write('\nTotal Energy Of Start(E_s) : %e\n' %ene_s)
+	sys.stderr.write('Total Energy Of End(E_e) : %e\n' %ene_f)
+	sys.stderr.write('Energy Differece(dE = |E_s - E_e|) : %e\n' %ene_diff)
+
+	return ene_diff
 
 if __name__ == '__main__':
 	args = sys.argv
