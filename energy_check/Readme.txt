@@ -1,8 +1,8 @@
-#########################
-# check kinetic energy  #
-#########################
+#############################
+# check mechanical  energy  #
+#############################
 
-you need to edit parameters R1, R2.
+you need to edit parameters R1 and R2, star radius, in energy_check.py.
 you can run this program as follow.
 
 ########################################################
