@@ -118,6 +118,14 @@ if __name__ == '__main__':
 	data_f = np.loadtxt(args[2])
 	time_data = np.loadtxt(args[3], usecols=(2,4))
 
+	if(len(args) < 5):
+		max_timestep = time_data[len(time_data)-1,0]
+	elif(float(args[4]) > time_data[len(time_data)-1,0]):
+		sys.stderr.write('Error : max timestep is larger than final time of time.log\n')
+		exit()
+	else:
+		max_timestep = float(args[4])
+
 	p_s = [Particle() for i in range(len(data_s))]
 	p_f = [Particle() for i in range(len(data_f))]
 
@@ -126,10 +134,6 @@ if __name__ == '__main__':
 
 	p_s.sort(key=operator.attrgetter("p_id"))
 	p_f.sort(key=operator.attrgetter("p_id"))
-
-	max_timestep = time_data[len(time_data)-1,0]
-	if(len(args) > 4):
-		max_timestep = float(args[4])
 
 	ene_diff = calc_energy_difference(p_s, p_f)
 	max_ene_error, max_time, ene_error_end, end_time = check_energy_error(time_data, max_timestep)
