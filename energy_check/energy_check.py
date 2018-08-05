@@ -79,7 +79,7 @@ def calc_energy(p):
 def check_energy_error(time_data, max_time):
 	ene_init = time_data[0,1]
 	max_ene_error = 0.
-	time = 0
+	time = 0.
 	for i in range(len(time_data)):
 		if(time_data[i,0] >= max_time):
 			ene_error_end = abs(time_data[i,1] - ene_init)
