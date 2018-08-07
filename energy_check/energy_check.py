@@ -15,10 +15,10 @@ G = 6.67259e-8
 ####### you need to set #########
 #R1 = 1.0 * rsun
 #R2 = 1.0 * rsun
-R1 = 4.0 * rsun
-R2 = 4.0 * rsun
-# R1 = 17.2 * rsun
-# R2 = 17.2 * rsun
+#R1 = 4.0 * rsun
+#R2 = 4.0 * rsun
+R1 = 17.2 * rsun
+R2 = 17.2 * rsun
 
 #visualization(if view = 0, no plot. if view = 1, plot)
 view = 1
