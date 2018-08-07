@@ -144,4 +144,4 @@ if __name__ == '__main__':
 
 	sys.stderr.write('\nMax Energy Error(|E_m|) : %e, Time : %lf\n' %(max_ene_error, max_time))
 	sys.stderr.write('Energy Error Of End(|E_e|) : %e, Time : %lf\n\n' %(ene_error_end, end_time))
-	sys.stderr.write('Energy Error Rate(E_r = |E_e / E_d|): %.1lf per\n\n' %ene_error_rate)
+	sys.stderr.write('Energy Error Rate(E_r = |E_e / E_d|): %.3lf per\n\n' %ene_error_rate)
