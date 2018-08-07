@@ -114,6 +114,8 @@ if __name__ == '__main__':
 		sys.stderr.write('Error : no input file\n')
 		exit()
 
+	sys.stderr.write('R1 = %.1lfRsun, R2 = %.1lfRsun\n' %(R1/rsun, R2/rsun))
+
 	data_s = np.loadtxt(args[1])
 	data_f = np.loadtxt(args[2])
 	time_data = np.loadtxt(args[3], usecols=(2,4))
