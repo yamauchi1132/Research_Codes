@@ -1,3 +1,5 @@
+#This is included into energy_check.py.
+
 class Particle:
   p_id = 0.
   istar = 0.
