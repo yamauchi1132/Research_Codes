@@ -2,8 +2,11 @@ import sys
 import numpy as np
 import operator
 import math
+import matplotlib as mpl
+import matplotlib.pyplot as plt
 from user_define import Particle
 from user_define import readfile
+from plot import visualization
 
 msun = 1.989e+33
 rsun = 695700e+5
@@ -16,6 +19,9 @@ R1 = 4.0 * rsun
 R2 = 4.0 * rsun
 # R1 = 17.2 * rsun
 # R2 = 17.2 * rsun
+
+#visualization(if view = 0, no plot. if view = 1, plot)
+view = 1
 #################################
 
 def calc_energy(p):
@@ -145,3 +151,7 @@ if __name__ == '__main__':
 	sys.stderr.write('\nMax Energy Error(|E_m|) : %e, Time : %lf\n' %(max_ene_error, max_time))
 	sys.stderr.write('Energy Error Of End(|E_e|) : %e, Time : %lf\n\n' %(ene_error_end, end_time))
 	sys.stderr.write('Energy Error Rate(E_r = |E_e / E_d|): %.3lf per\n\n' %ene_error_rate)
+
+	if(view == 1):
+		visualization(time_data, args[3])
+
