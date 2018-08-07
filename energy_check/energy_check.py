@@ -10,8 +10,8 @@ rsun = 695700e+5
 G = 6.67259e-8
 
 ####### you need to set #########
-# Rl1 = 1.0 * rsun
-# R2 = 1.0 * rsun
+R1 = 1.0 * rsun
+R2 = 1.0 * rsun
 # R1 = 4.0 * rsun
 # R2 = 4.0 * rsun
 # R1 = 17.2 * rsun
@@ -118,20 +118,6 @@ if __name__ == '__main__':
 	data_s = np.loadtxt(args[1])
 	data_f = np.loadtxt(args[2])
 	time_data = np.loadtxt(args[3], usecols=(2,4))
-
-	mass_per_msun = round((data_s[0,2] * (len(data_s)/2)) / msun, 0)
-	if(mass_per_msun == 1.0):
-		R1 = 1.0 * rsun
-		R2 = 1.0 * rsun
-	elif(mass_per_msun == 10.0):
-		R1 = 4.0 * rsun
-		R2 = 4.0 * rsun
-	elif(mass_per_msun == 100.0):
-		R1 = 17.2 * rsun
-		R2 = 17.2 * rsun
-	else:
-		sys.stderr.write('Error : mass is unknow')
-		exit()
 
 	sys.stderr.write('R1 = %.1lfRsun, R2 = %.1lfRsun\n' %(R1/rsun, R2/rsun))
 
