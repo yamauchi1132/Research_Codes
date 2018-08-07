@@ -10,10 +10,10 @@ rsun = 695700e+5
 G = 6.67259e-8
 
 ####### you need to set #########
-R1 = 1.0 * rsun
-R2 = 1.0 * rsun
-# R1 = 4.0 * rsun
-# R2 = 4.0 * rsun
+#R1 = 1.0 * rsun
+#R2 = 1.0 * rsun
+R1 = 4.0 * rsun
+R2 = 4.0 * rsun
 # R1 = 17.2 * rsun
 # R2 = 17.2 * rsun
 #################################
@@ -115,11 +115,11 @@ if __name__ == '__main__':
 		sys.stderr.write('Error : no input file\n')
 		exit()
 
+	sys.stderr.write('R1 = %.1lfRsun, R2 = %.1lfRsun\n' %(R1/rsun, R2/rsun))
+
 	data_s = np.loadtxt(args[1])
 	data_f = np.loadtxt(args[2])
 	time_data = np.loadtxt(args[3], usecols=(2,4))
-
-	sys.stderr.write('R1 = %.1lfRsun, R2 = %.1lfRsun\n' %(R1/rsun, R2/rsun))
 
 	if(len(args) < 5):
 		max_timestep = time_data[len(time_data)-1,0]
