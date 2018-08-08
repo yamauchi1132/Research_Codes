@@ -2,11 +2,16 @@ import sys
 import numpy as np
 import operator
 import math
-import matplotlib as mpl
-import matplotlib.pyplot as plt
 from user_define import Particle
 from user_define import readfile
-from plot import visualization
+
+## visualization(if view = 0, no plot. if view = 1, plot) ##
+view = 1
+############################################################
+if(view == 1):
+	import matplotlib as mpl
+	import matplotlib.pyplot as plt
+	from plot import visualization
 
 msun = 1.989e+33
 rsun = 695700e+5
@@ -19,9 +24,6 @@ G = 6.67259e-8
 #R2 = 4.0 * rsun
 R1 = 17.2 * rsun
 R2 = 17.2 * rsun
-
-#visualization(if view = 0, no plot. if view = 1, plot)
-view = 1
 #################################
 
 def calc_energy(p):
