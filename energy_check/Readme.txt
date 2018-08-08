@@ -1,6 +1,6 @@
-#############################
-# check mechanical  energy  #
-#############################
+############################
+# check mechanical energy  #
+############################
 
 you can run this program as follow.
 
