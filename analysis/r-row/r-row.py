@@ -39,7 +39,7 @@ def plot(r1, dens1, r2, dens2):
   plt.tight_layout()
   
   plt.show()
-  # plt.savefig("dens_r.png", dpi=600)
+  # plt.savefig("r_dens.png", dpi=600)
   plt.close()
 
 if __name__ == '__main__':
