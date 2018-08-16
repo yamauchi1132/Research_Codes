@@ -2,8 +2,7 @@ import sys
 import numpy as np
 import operator
 import math
-from user_define import Particle
-from user_define import readfile
+from common import *
 
 ## visualization(if view = 0, no plot. if view = 1, plot) ##
 view = 1
