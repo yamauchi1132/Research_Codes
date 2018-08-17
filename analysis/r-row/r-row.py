@@ -64,11 +64,11 @@ if __name__ == '__main__':
   pos1_cg = np.array([0.,0.,0.])
   vel1_cg = np.array([0.,0.,0.])
   pos2_cg = np.array([0.,0.,0.])
-  vel1_cg = np.array([0.,0.,0.])
+  vel2_cg = np.array([0.,0.,0.])
 
   pos1_cg, vel1_cg = calc_center_of_gravity(p1)
   pos2_cg, vel2_cg = calc_center_of_gravity(p2)
-
+ 
   r1, dens1 = calc_r_and_dens(p1, pos1_cg)
   r2, dens2 = calc_r_and_dens(p2, pos2_cg)
 

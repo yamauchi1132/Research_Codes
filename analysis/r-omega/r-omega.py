@@ -29,19 +29,25 @@ def plot(r1, omega1, r2, omega2):
   # plt.savefig("r_omega.png", dpi=600)
   plt.close()
 
-def calc_r_and_vel_phi(p):
+def calc_r_and_vel_phi(p, pos_cg, vel_cg):
   r = []
   omega = []
   for i in range(len(p)):
-    x2 = p[i].posx * p[i].posx
-    y2 = p[i].posy * p[i].posy
-    z2 = p[i].posz * p[i].posz
+    x = p[i].posx - pos_cg[0]
+    y = p[i].posy - pos_cg[1]
+    z = p[i].posz - pos_cg[2]
+    x2 = x * x
+    y2 = y * y
+    z2 = z * z
     r_1 = math.sqrt(x2 + y2 + z2)
     r.append(r_1)
 
-    vx2 = p[i].velx * p[i].velx
-    vy2 = p[i].vely * p[i].vely
-    vz2 = p[i].velz * p[i].velz
+    vx = p[i].velx - vel_cg[0]
+    vy = p[i].vely - vel_cg[1]
+    vz = p[i].velz - vel_cg[2]
+    vx2 = vx * vx
+    vy2 = vy * vy
+    vz2 = vz * vz
     v = math.sqrt(vx2 + vy2 + vz2)
     w = v / r_1
     omega.append(w)
@@ -64,7 +70,15 @@ if __name__ == '__main__':
   readfile(data1, p1)
   readfile(data2, p2)
 
-  r1, omega1 = calc_r_and_vel_phi(p1)
-  r2, omega2 = calc_r_and_vel_phi(p2)
+  pos1_cg = np.array([0.,0.,0.])
+  vel1_cg = np.array([0.,0.,0.])
+  pos2_cg = np.array([0.,0.,0.])
+  vel2_cg = np.array([0.,0.,0.])
+
+  pos1_cg, vel1_cg = calc_center_of_gravity(p1)
+  pos2_cg, vel2_cg = calc_center_of_gravity(p2)
+
+  r1, omega1 = calc_r_and_vel_phi(p1, pos1_cg, vel1_cg)
+  r2, omega2 = calc_r_and_vel_phi(p2, pos2_cg, vel2_cg)
 
   plot(r1, omega1, r2, omega2)
