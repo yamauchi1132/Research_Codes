@@ -1,4 +1,5 @@
 #This is included by each program
+import numpy as np
 
 class Particle:
   p_id = 0.
@@ -69,3 +70,27 @@ def readfile(data, p):
     p[i].dnuc = data[i,30]
     for j in range(18):
       p[i].cmps[j] = data[i, 31+j]
+
+def calc_center_of_gravity(p):
+  row_sum = 0.
+  pos_cg = np.array([0.,0.,0.])
+  vel_cg = np.array([0.,0.,0.])
+
+  for i in range(len(p)):
+    row_sum += p[i].dens
+    pos_cg[0] += p[i].dens * p[i].posx
+    pos_cg[1] += p[i].dens * p[i].posy
+    pos_cg[2] += p[i].dens * p[i].posz
+
+    vel_cg[0] += p[i].dens * p[i].velx
+    vel_cg[1] += p[i].dens * p[i].vely
+    vel_cg[2] += p[i].dens * p[i].velz
+  
+  for i in range(3):
+    pos_cg[i] = pos_cg[i] / row_sum
+    vel_cg[i] = vel_cg[i] / row_sum
+
+  return pos_cg, vel_cg
+
+
+
