@@ -33,24 +33,28 @@ def calc_r_and_vel_phi(p, pos_cg, vel_cg):
   r = []
   omega = []
   for i in range(len(p)):
-    x = p[i].posx - pos_cg[0]
-    y = p[i].posy - pos_cg[1]
-    z = p[i].posz - pos_cg[2]
-    x2 = x * x
-    y2 = y * y
-    z2 = z * z
-    r_1 = math.sqrt(x2 + y2 + z2)
-    r.append(r_1)
-
     vx = p[i].velx - vel_cg[0]
     vy = p[i].vely - vel_cg[1]
     vz = p[i].velz - vel_cg[2]
     vx2 = vx * vx
     vy2 = vy * vy
     vz2 = vz * vz
-    v = math.sqrt(vx2 + vy2 + vz2)
-    w = v / r_1
-    omega.append(w)
+    v2 = vx2 + vy2 + vz2
+    ene = 0.5*v2 + p[i].pot + p[i].uene
+    
+    if(ene < 0):
+      x = p[i].posx - pos_cg[0]
+      y = p[i].posy - pos_cg[1]
+      z = p[i].posz - pos_cg[2]
+      x2 = x * x
+      y2 = y * y
+      z2 = z * z
+      r_1 = math.sqrt(x2 + y2 + z2)
+      r.append(r_1)
+
+      v = math.sqrt(vx2 + vy2 + vz2)
+      w = v / r_1
+      omega.append(w)
 
   return r, omega
 

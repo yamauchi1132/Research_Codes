@@ -7,19 +7,29 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 from common import *
 
-def calc_r_and_dens(p, pos_cg):
+def calc_r_and_dens(p, pos_cg, vel_cg):
   r = []
   dens = []
   for i in range(len(p)):
-    x = p[i].posx - pos_cg[0]
-    y = p[i].posy - pos_cg[1]
-    z = p[i].posz - pos_cg[2]
-    x2 = x * x
-    y2 = y * y
-    z2 = z * z
-    r_1 = math.sqrt(x2 + y2 + z2)
-    r.append(r_1)
-    dens.append(p[i].dens)
+    vx = p[i].velx - vel_cg[0]
+    vy = p[i].vely - vel_cg[1]
+    vz = p[i].velz - vel_cg[2]
+    vx2 = vx * vx
+    vy2 = vy * vy
+    vz2 = vz * vz
+    v2 = vx2 + vy2 + vz2
+    ene = 0.5*v2 + p[i].pot + p[i].uene
+
+    if(ene < 0):
+      x = p[i].posx - pos_cg[0]
+      y = p[i].posy - pos_cg[1]
+      z = p[i].posz - pos_cg[2]
+      x2 = x * x
+      y2 = y * y
+      z2 = z * z
+      r_1 = math.sqrt(x2 + y2 + z2)
+      r.append(r_1)
+      dens.append(p[i].dens)
 
   return r, dens
 
@@ -69,7 +79,7 @@ if __name__ == '__main__':
   pos1_cg, vel1_cg = calc_center_of_gravity(p1)
   pos2_cg, vel2_cg = calc_center_of_gravity(p2)
  
-  r1, dens1 = calc_r_and_dens(p1, pos1_cg)
-  r2, dens2 = calc_r_and_dens(p2, pos2_cg)
+  r1, dens1 = calc_r_and_dens(p1, pos1_cg, vel1_cg)
+  r2, dens2 = calc_r_and_dens(p2, pos2_cg, vel2_cg)
 
   plot(r1, dens1, r2, dens2)

@@ -91,6 +91,3 @@ def calc_center_of_gravity(p):
     vel_cg[i] = vel_cg[i] / row_sum
 
   return pos_cg, vel_cg
-
-
-
