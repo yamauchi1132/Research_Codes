@@ -33,20 +33,21 @@ def calc_r_and_dens(p, pos_cg, vel_cg):
 
   return r, dens
 
-def plot(r1, dens1, r2, dens2):
+def plot(r_list, dens_list, args):
   fig = plt.figure()
   mpl.rcParams['agg.path.chunksize'] = 10000
-  plt.plot(r1, dens1, '.', ms=0.5, label=1.0)
-  plt.plot(r2, dens2, '.', ms=0.5, label=1.2)
+
+  for i in range(len(r_list)):
+    plt.plot(r_list[i], dens_list[i], '.', ms=0.5, label=args[i+1])
 
   plt.xscale('log')
   plt.yscale('log')
 
-  plt.xlabel(r'$r\,[cm]$', fontsize=18)
-  plt.ylabel(r'$\rho\,[g\,cm^{-3}]$', fontsize=18)
+  plt.xlabel(r'$r\,[cm]$')
+  plt.ylabel(r'$\rho\,[g\,cm^{-3}]$')
 
-  plt.legend(fontsize=18)
-  plt.tick_params(labelsize=18)
+  plt.legend(fontsize=10)
+  plt.tick_params(labelsize=10)
   mpl.rcParams['axes.xmargin'] = 0
   mpl.rcParams['axes.ymargin'] = 0
   plt.tight_layout()
@@ -58,28 +59,24 @@ def plot(r1, dens1, r2, dens2):
 if __name__ == '__main__':
   args = sys.argv
 
-  if(len(args) < 3):
+  if(len(args) < 2):
     sys.stderr.write('Error : no input file\n')
     exit()
 
-  data1 = np.loadtxt(args[1])
-  data2 = np.loadtxt(args[2])
+  r_list = []
+  dens_list = []
+  for i in range(1, len(args)):
+    data = np.loadtxt(args[i])
+    p = [Particle() for i in range(len(data))]
+    readfile(data, p)
 
-  p1 = [Particle() for i in range(len(data1))]
-  p2 = [Particle() for i in range(len(data2))]
+    pos_cg = np.array([0.,0.,0.])
+    vel_cg = np.array([0.,0.,0.])
+    pos_cg, vel_cg = calc_center_of_gravity(p)
 
-  readfile(data1, p1)
-  readfile(data2, p2)
+    r, dens = calc_r_and_dens(p, pos_cg, vel_cg)  
 
-  pos1_cg = np.array([0.,0.,0.])
-  vel1_cg = np.array([0.,0.,0.])
-  pos2_cg = np.array([0.,0.,0.])
-  vel2_cg = np.array([0.,0.,0.])
+    r_list.append(r)
+    dens_list.append(dens)
 
-  pos1_cg, vel1_cg = calc_center_of_gravity(p1)
-  pos2_cg, vel2_cg = calc_center_of_gravity(p2)
- 
-  r1, dens1 = calc_r_and_dens(p1, pos1_cg, vel1_cg)
-  r2, dens2 = calc_r_and_dens(p2, pos2_cg, vel2_cg)
-
-  plot(r1, dens1, r2, dens2)
+  plot(r_list, dens_list, args)

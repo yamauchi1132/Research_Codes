@@ -43,7 +43,7 @@ if __name__ == '__main__':
 
   result_bound = []
   result_unbound = []
-  for i in range(1,len(args)):
+  for i in range(1, len(args)):
     data = np.loadtxt(args[i])
     p = [Particle() for i in range(len(data))]
     readfile(data, p)
