@@ -3,9 +3,14 @@ sys.path.append(os.pardir)
 import numpy as np
 import operator
 import math
-import matplotlib as mpl
-import matplotlib.pyplot as plt
 from common import *
+
+## visualization(if view = 0, no plot. if view = 1, plot) ##
+view = 0
+############################################################
+if(view == 1):
+        import matplotlib as mpl
+        import matplotlib.pyplot as plt
 
 Msun = 1.989e+33
 
@@ -21,7 +26,7 @@ def calc_unbound_mass(p, mass_total, vel_cg):
     vz2 = vz * vz
     v2 = vx2 + vy2 + vz2
 
-    ene = 0.5*v2 + p[i].pot + p[i].uene
+    ene = 0.5*v2 + 0.5*p[i].pot + p[i].uene
     if(ene > 0):
       mass_unbound += p[i].mass
 
@@ -61,3 +66,6 @@ if __name__ == '__main__':
   for i in range(len(result_bound)):
     sys.stderr.write(args[i+1])
     sys.stderr.write('\nBound Mass = %.3lf Msun, Unbound Mass = %.3lf Msun\n\n' %(result_bound[i]/Msun, result_unbound[i]/Msun))
+
+  if(view == 1):
+    pass
