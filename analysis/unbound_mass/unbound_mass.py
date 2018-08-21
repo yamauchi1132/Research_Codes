@@ -7,13 +7,18 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 from common import *
 
-def calc_unbound_mass(p, mass_total):
+Msun = 1.989e+33
+
+def calc_unbound_mass(p, mass_total, vel_cg):
   mass_unbound = 0.
 
   for i in range(len(p)):
-    vx2 = p[i].velx * p[i].velx
-    vy2 = p[i].vely * p[i].vely
-    vz2 = p[i].velz * p[i].velz
+    vx = p[i].velx - vel_cg[0]
+    vy = p[i].vely - vel_cg[1]
+    vz = p[i].velz - vel_cg[2]
+    vx2 = vx * vx
+    vy2 = vy * vy
+    vz2 = vz * vz
     v2 = vx2 + vy2 + vz2
 
     ene = 0.5*v2 + p[i].pot + p[i].uene
@@ -40,17 +45,25 @@ if __name__ == '__main__':
   readfile(data1, p1)
   readfile(data2, p2)
 
+  pos1_cg = np.array([0.,0.,0.])
+  vel1_cg = np.array([0.,0.,0.])
+  pos2_cg = np.array([0.,0.,0.])
+  vel2_cg = np.array([0.,0.,0.])
+
+  pos1_cg, vel1_cg = calc_center_of_gravity(p1)
+  pos2_cg, vel2_cg = calc_center_of_gravity(p2)
+
   mass_total = 0.
   for i in range(len(p1)):
     mass_total += p1[i].mass
   
-  m1_bound, m1_unbound = calc_unbound_mass(p1, mass_total)
-  m2_bound, m2_unbound = calc_unbound_mass(p2, mass_total)
+  m1_bound, m1_unbound = calc_unbound_mass(p1, mass_total, vel1_cg)
+  m2_bound, m2_unbound = calc_unbound_mass(p2, mass_total, vel2_cg)
 
-  sys.stderr.write('\nTotal Mass = %e\n\n' %mass_total)
+  sys.stderr.write('\nTotal Mass = %.1lf Msun\n\n' %(mass_total/Msun))
 
   sys.stderr.write('Rp = 1.0\n')
-  sys.stderr.write('Bound Mass = %e, Unbound Mass = %e\n\n' %(m1_bound, m1_unbound))
+  sys.stderr.write('Bound Mass = %.3lf Msun, Unbound Mass = %.3lf Msun\n\n' %(m1_bound/Msun, m1_unbound/Msun))
 
   sys.stderr.write('Rp = 1.2\n')
-  sys.stderr.write('Bound Mass = %e, Unbound Mass = %e\n\n' %(m2_bound, m2_unbound))
+  sys.stderr.write('Bound Mass = %.3lf Msun, Unbound Mass = %.3lf Msun\n\n' %(m2_bound/Msun, m2_unbound/Msun))
