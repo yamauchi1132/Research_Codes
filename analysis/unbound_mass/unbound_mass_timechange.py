@@ -26,7 +26,7 @@ def calc_unbound_mass(p, mass_total, vel_cg):
     vz2 = vz * vz
     v2 = vx2 + vy2 + vz2
 
-    ene = 0.5*v2 + 0.5*p[i].pot + p[i].uene
+    ene = 0.5*v2 + p[i].pot + p[i].uene
     if(ene > 0):
       mass_unbound += p[i].mass
 

@@ -18,7 +18,7 @@ def calc_r_and_vel_phi(p, pos_cg, vel_cg):
     vy2 = vy * vy
     vz2 = vz * vz
     v2 = vx2 + vy2 + vz2
-    ene = 0.5*v2 + 0.5*p[i].pot + p[i].uene
+    ene = 0.5*v2 + p[i].pot + p[i].uene
 
     if(ene < 0):
       x = p[i].posx - pos_cg[0]
