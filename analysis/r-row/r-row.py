@@ -3,8 +3,6 @@ sys.path.append(os.pardir)
 import numpy as np
 import operator
 import math
-import matplotlib as mpl
-import matplotlib.pyplot as plt
 from common import *
 
 def calc_r_and_dens(p, pos_cg, vel_cg):
