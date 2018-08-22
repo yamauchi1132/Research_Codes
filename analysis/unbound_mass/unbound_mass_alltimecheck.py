@@ -10,7 +10,7 @@ from common import *
 dirname = "../data/sph_t%04d.dat"
 start = 600
 end = 800
-step = 100
+step = 1
 
 Msun = 1.989e+33
 
