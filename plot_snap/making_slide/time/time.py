@@ -16,20 +16,20 @@ if __name__ == '__main__':
   grav_tg = []
   all_tg = []
 
-  data_c = np.loadtxt("time_cpu.data")
-  data_g = np.loadtxt("time_gpu.data")
+  data_c = np.loadtxt("time_cpu_two_body.data")
+  data_g = np.loadtxt("time_gpu_two_body.data")
 
   p_num.extend(data_c[:,0])
-  dens_t.extend(data_c[:,1])
-  hydro_t.extend(data_c[:,2])
-  grav_t.extend(data_c[:,3])
-  all_t.extend(data_c[:,4])
+  dens_t.extend(data_c[:,2])
+  hydro_t.extend(data_c[:,3])
+  grav_t.extend(data_c[:,4])
+  all_t.extend(data_c[:,1])
 
   p_numg.extend(data_g[:,0])
-  dens_tg.extend(data_g[:,1])
-  hydro_tg.extend(data_g[:,2])
-  grav_tg.extend(data_g[:,3])
-  all_tg.extend(data_g[:,4])
+  dens_tg.extend(data_g[:,2])
+  hydro_tg.extend(data_g[:,3])
+  grav_tg.extend(data_g[:,4])
+  all_tg.extend(data_g[:,1])
 
   fig = plt.figure()
   x = p_num
@@ -49,5 +49,5 @@ if __name__ == '__main__':
   plt.tight_layout()
   
   #plt.show()
-  plt.savefig("time.png", dpi=600)
+  plt.savefig("time_two_body.png", dpi=600)
   plt.close()
