@@ -9,7 +9,7 @@ from common import *
 
 dirname = "../data/sph_t%04d.dat"
 start = 600
-end = 900
+end = 800
 step = 100
 
 Msun = 1.989e+33
@@ -55,7 +55,7 @@ if __name__ == '__main__':
   result_bound = []
   result_unbound = []
   time = []
-  for t in range(start,end,step):
+  for t in range(start,end+step,step):
     data = np.loadtxt(dirname % t)
     p = [Particle() for i in range(len(data))]
     readfile(data, p)
