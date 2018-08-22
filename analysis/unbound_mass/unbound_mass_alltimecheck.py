@@ -8,6 +8,8 @@ import matplotlib.pyplot as plt
 from common import *
 
 dirname = "../data/sph_t%04d.dat"
+start = 600
+end = 900
 
 Msun = 1.989e+33
 
@@ -52,7 +54,7 @@ if __name__ == '__main__':
   result_bound = []
   result_unbound = []
   time = []
-  for t in range(600,900,100):
+  for t in range(start,end,100):
     data = np.loadtxt(dirname % t)
     p = [Particle() for i in range(len(data))]
     readfile(data, p)
