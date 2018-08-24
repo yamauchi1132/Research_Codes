@@ -26,70 +26,57 @@ R2 = 17.2 * rsun
 #################################
 
 def calc_energy(p):
-	row1_sum = 0.
-	row2_sum = 0.
+	row_sum = np.array([0.,0.])
 	pos_sum = np.array([0.,0.,0.,0.,0.,0.]).reshape(2,3)
 	vel_sum = np.array([0.,0.,0.,0.,0.,0.]).reshape(2,3)
 
 	for i in range(int(len(p)//2)):
-		row1_sum += p[i].dens
-		pos_sum[0][0] += p[i].dens * p[i].posx
-		pos_sum[0][1] += p[i].dens * p[i].posy
-		pos_sum[0][2] += p[i].dens * p[i].posz
-		vel_sum[0][0] += p[i].dens * p[i].velx
-		vel_sum[0][1] += p[i].dens * p[i].vely
-		vel_sum[0][2] += p[i].dens * p[i].velz
+		row_sum[0] += p[i].dens
+		for j in range(3):
+			pos_sum[0][j] += p[i].dens * p[i].pos[j]
+			vel_sum[0][j] += p[i].dens * p[i].vel[j]
 
 	for i in range(int(len(p)//2), len(p)):
-		row2_sum += p[i].dens
-		pos_sum[1][0] += p[i].dens * p[i].posx
-		pos_sum[1][1] += p[i].dens * p[i].posy
-		pos_sum[1][2] += p[i].dens * p[i].posz
-		vel_sum[1][0] += p[i].dens * p[i].velx
-		vel_sum[1][1] += p[i].dens * p[i].vely
-		vel_sum[1][2] += p[i].dens * p[i].velz
+		row_sum[1] += p[i].dens
+		for j in range(3):
+			pos_sum[1][j] += p[i].dens * p[i].pos[j]
+			vel_sum[1][j] += p[i].dens * p[i].vel[j]
 	
-	point_pos1_x = pos_sum[0][0] / row1_sum
-	point_pos1_y = pos_sum[0][1] / row1_sum
-	point_pos1_z = pos_sum[0][2] / row1_sum
-	point_pos2_x = pos_sum[1][0] / row2_sum
-	point_pos2_y = pos_sum[1][1] / row2_sum
-	point_pos2_z = pos_sum[1][2] / row2_sum
+	point_pos = np.array([0.,0.,0.,0.,0.,0.]).reshape(2,3)
+	point_vel = np.array([0.,0.,0.,0.,0.,0.]).reshape(2,3)
 
-	point_vel1_x = vel_sum[0][0] / row1_sum
-	point_vel1_y = vel_sum[0][1] / row1_sum
-	point_vel1_z = vel_sum[0][2] / row1_sum
-	point_vel2_x = vel_sum[1][0] / row2_sum
-	point_vel2_y = vel_sum[1][1] / row2_sum
-	point_vel2_z = vel_sum[1][2] / row2_sum
+	for i in range(2):
+		for j in range(3):
+			point_pos[i][j] = pos_sum[i][j] / row_sum[i]
+			point_vel[i][j] = vel_sum[i][j] / row_sum[i]
 
 	point_m1 = 0.
 	point_m2 = 0.
 	for i in range(int(len(p)//2)):
-		dx = p[i].posx - point_pos1_x
-		dy = p[i].posy - point_pos1_y
-		dz = p[i].posz - point_pos1_z
+		dx = p[i].pos[0] - point_pos[0][0]
+		dy = p[i].pos[1] - point_pos[0][1]
+		dz = p[i].pos[2] - point_pos[0][2]
 		r_2 = dx*dx + dy*dy + dz*dz
 		r = math.sqrt(r_2)
 		if(r < 2*R1):
 			point_m1 += p[i].mass
 
 	for i in range(int(len(p)//2), len(p)):
-		dx = p[i].posx - point_pos2_x
-		dy = p[i].posy - point_pos2_y
-		dz = p[i].posz - point_pos2_z
+		dx = p[i].pos[0] - point_pos[1][0]
+		dy = p[i].pos[1] - point_pos[1][1]
+		dz = p[i].pos[2] - point_pos[1][2]
 		r_2 = dx*dx + dy*dy + dz*dz
 		r = math.sqrt(r_2)
 		if(r < 2*R2):
 			point_m2 += p[i].mass
 
-	vel1_2 = point_vel1_x*point_vel1_x + point_vel1_y*point_vel1_y + point_vel1_z*point_vel1_z
-	vel2_2 = point_vel2_x*point_vel2_x + point_vel2_y*point_vel2_y + point_vel2_z*point_vel2_z
+	vel1_2 = point_vel[0][0]*point_vel[0][0] + point_vel[0][1]*point_vel[0][1] + point_vel[0][2]*point_vel[0][2]
+	vel2_2 = point_vel[1][0]*point_vel[1][0] + point_vel[1][1]*point_vel[1][1] + point_vel[1][2]*point_vel[1][2]
 	k_e = 0.5*point_m1*vel1_2 + 0.5*point_m2*vel2_2
 
-	dx = point_pos1_x - point_pos2_x
-	dy = point_pos1_y - point_pos2_y
-	dz = point_pos1_z - point_pos2_z
+	dx = point_pos[0][0] - point_pos[1][0]
+	dy = point_pos[0][1] - point_pos[1][1]
+	dz = point_pos[0][2] - point_pos[1][2]
 	p_e = (G*point_m1*point_m2) / math.sqrt(dx*dx + dy*dy + dz*dz)
 
 	ene = k_e - p_e

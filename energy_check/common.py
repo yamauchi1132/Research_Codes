@@ -1,53 +1,49 @@
 #This is included into energy_check.py.
+import numpy as np
 
 class Particle:
-  p_id = 0.
-  istar = 0.
-  mass = 0.
-  posx = 0.
-  posy = 0.
-  posz = 0.
-  velx = 0.
-  vely = 0.
-  velz = 0.
-  accx = 0.
-  accy = 0.
-  accz = 0.
-  uene = 0.
-  dalph = 0.
-  alphu = 0.
-  dens = 0.
-  ksr = 0.
-  np = 0.
-  vsnd = .0
-  pres = 0.
-  emp = 0.
-  divv = 0.
-  rotv = 0.
-  bswt = 0.
-  pot = 0.
-  abar = 0.
-  zbar = 0.
-  enuc = 0.
-  vsmx = 0.
-  udot = 0.
-  dnuc = 0.
-  cmps = [0. for i in range(18)]
+  def __init__(self):
+    self.p_id = 0.
+    self.istar = 0.
+    self.mass = 0.
+    self.pos = np.array([0.,0.,0.])
+    self.vel = np.array([0.,0.,0.])
+    self.acc = np.array([0.,0.,0.])
+    self.uene = 0.
+    self.dalph = 0.
+    self.alphu = 0.
+    self.dens = 0.
+    self.ksr = 0.
+    self.np = 0.
+    self.vsnd = .0
+    self.pres = 0.
+    self.emp = 0.
+    self.divv = 0.
+    self.rotv = 0.
+    self.bswt = 0.
+    self.pot = 0.
+    self.abar = 0.
+    self.zbar = 0.
+    self.enuc = 0.
+    self.vsmx = 0.
+    self.udot = 0.
+    self.dnuc = 0.
+    self.cmps = [0. for i in range(18)]
 
 def readfile(data, p):
   for i in range(len(data)):
     p[i].p_id = data[i,0] 
     p[i].istar = data[i,1]
     p[i].mass = data[i,2]
-    p[i].posx = data[i,3]
-    p[i].posy = data[i,4]
-    p[i].posz = data[i,5]
-    p[i].velx = data[i,6]
-    p[i].vely = data[i,7]
-    p[i].velz = data[i,8]
-    p[i].accx = data[i,9]
-    p[i].accy = data[i,10]
-    p[i].accz = data[i,11]
+    p[i].pos[0] = data[i,3]
+    p[i].pos[1] = data[i,4]
+    p[i].pos[2] = data[i,5]
+    p[i].vel[0] = data[i,6]
+    p[i].vel[1] = data[i,7]
+    p[i].vel[2] = data[i,8]
+    p[i].acc[0] = data[i,9]
+    p[i].acc[1] = data[i,10]
+    p[i].acc[2] = data[i,11]
     p[i].uene = data[i,12]
     p[i].dalph = data[i,13]
     p[i].alphu = data[i,14]
