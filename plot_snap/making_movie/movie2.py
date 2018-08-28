@@ -70,6 +70,4 @@ if __name__ == '__main__':
 
   ani = animation.ArtistAnimation(fig, ims, interval=100)
   ani.save('x_yAndx_z.mp4', writer="ffmpeg")
-  plt.close()
-
-
+plt.close()
