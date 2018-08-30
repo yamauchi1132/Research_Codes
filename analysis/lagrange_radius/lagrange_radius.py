@@ -52,6 +52,7 @@ def plot(t, lagrange_r):
 
 	plt.xlabel('time [s]', fontsize=12)
 	plt.ylabel('radius [Rsun]', fontsize=12)
+	plt.yscale('log')
 	plt.tick_params(labelsize=12)
 	plt.legend(fontsize=12)
 	mpl.rcParams['axes.xmargin'] = 0
