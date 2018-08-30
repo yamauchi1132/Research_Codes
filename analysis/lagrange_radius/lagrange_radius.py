@@ -7,10 +7,17 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 from common2 import *
 
+dirname = "../../run1/snap_unbound_10.0Msun_4.0Rsun_pori1.5_rp1.2R_vinf1.00e+06/sph_t%04d.dat"
+start = 800
+end = 1200
+step = 10
+
+'''
 dirname = "../data/sph_t%04d.dat"
 start = 600
 end = 800
 step = 100
+'''
 
 Msun = 1.989e+33
 Rsun = 695700e+5;
@@ -58,6 +65,7 @@ def plot(t, lagrange_r):
 	mpl.rcParams['axes.xmargin'] = 0
 	mpl.rcParams['axes.ymargin'] = 0
 	plt.tight_layout()
+	plt.gca().set_aspect('equal', adjustable='box')
 
 	plt.show()
 	plt.close()
