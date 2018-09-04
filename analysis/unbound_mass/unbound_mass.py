@@ -11,9 +11,9 @@ def calc_unbound_mass(p, mass_total, vel_cg):
   mass_unbound = 0.
 
   for i in range(len(p)):
-    vx = p[i].velx - vel_cg[0]
-    vy = p[i].vely - vel_cg[1]
-    vz = p[i].velz - vel_cg[2]
+    vx = p[i].vel[0] - vel_cg[0]
+    vy = p[i].vel[1] - vel_cg[1]
+    vz = p[i].vel[2] - vel_cg[2]
     vx2 = vx * vx
     vy2 = vy * vy
     vz2 = vz * vz

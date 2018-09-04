@@ -9,11 +9,11 @@ from common import *
 
 def calc_r_and_vel_phi(p, pos_cg, vel_cg):
   r = []
-  omega = []
+  lmoment = []
   for i in range(len(p)):
-    vx = p[i].velx - vel_cg[0]
-    vy = p[i].vely - vel_cg[1]
-    vz = p[i].velz - vel_cg[2]
+    vx = p[i].vel[0] - vel_cg[0]
+    vy = p[i].vel[1] - vel_cg[1]
+    vz = p[i].vel[2] - vel_cg[2]
     vx2 = vx * vx
     vy2 = vy * vy
     vz2 = vz * vz
@@ -21,33 +21,33 @@ def calc_r_and_vel_phi(p, pos_cg, vel_cg):
     ene = 0.5*v2 + p[i].pot + p[i].uene
 
     if(ene < 0):
-      x = p[i].posx - pos_cg[0]
-      y = p[i].posy - pos_cg[1]
-      z = p[i].posz - pos_cg[2]
+      x = p[i].pos[0] - pos_cg[0]
+      y = p[i].pos[1] - pos_cg[1]
+      z = p[i].pos[2] - pos_cg[2]
       x2 = x * x
       y2 = y * y
       z2 = z * z
       r_1 = math.sqrt(x2 + y2 + z2)
       r.append(r_1)
 
-      v = math.sqrt(vx2 + vy2 + vz2)
-      w = v / r_1
-      omega.append(w)
+      l_phi = x*vy - y*vx
+      #l_phi = l_phi / (r_1 * r_1)
+      lmoment.append(l_phi)
 
-  return r, omega
+  return r, lmoment
 
-def plot(r_list, omega_list, args):
+def plot(r_list, lmoment_list, args):
   fig = plt.figure()
   mpl.rcParams['agg.path.chunksize'] = 10000
 
   for i in range(len(r_list)):
-    plt.plot(r_list[i], omega_list[i], '.', ms=0.5, label=args[i+1])
+    plt.plot(r_list[i], lmoment_list[i], '.', ms=0.5, label=args[i+1])
   
   plt.xscale('log')
   plt.yscale('log')
 
   plt.xlabel(r'$r\,[cm]$')
-  plt.ylabel(r'$\omega\,[rad\,s^{-1}]$')
+  plt.ylabel(r'$\L$')
 
   plt.legend(fontsize=10)
   plt.tick_params(labelsize=10)
@@ -56,7 +56,7 @@ def plot(r_list, omega_list, args):
   plt.tight_layout()
   
   plt.show()
-  # plt.savefig("r_omega.png", dpi=600)
+  # plt.savefig("r_lmoment.png", dpi=600)
   plt.close()
 
 if __name__ == '__main__':
@@ -67,7 +67,7 @@ if __name__ == '__main__':
     exit()
 
   r_list = []
-  omega_list = []
+  lmoment_list = []
   for i in range(1, len(args)):
     data = np.loadtxt(args[i])
     p = [Particle() for i in range(len(data))]
@@ -77,9 +77,9 @@ if __name__ == '__main__':
     vel_cg = np.array([0.,0.,0.])
     pos_cg, vel_cg = calc_center_of_gravity(p)
 
-    r, omega = calc_r_and_vel_phi(p, pos_cg, vel_cg)
+    r, lmoment = calc_r_and_vel_phi(p, pos_cg, vel_cg)
 
     r_list.append(r)
-    omega_list.append(omega)
+    lmoment_list.append(lmoment)
 
-  plot(r_list, omega_list, args)
+  plot(r_list, lmoment_list, args)

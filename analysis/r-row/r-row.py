@@ -11,9 +11,9 @@ def calc_r_and_dens(p, pos_cg, vel_cg):
   r = []
   dens = []
   for i in range(len(p)):
-    vx = p[i].velx - vel_cg[0]
-    vy = p[i].vely - vel_cg[1]
-    vz = p[i].velz - vel_cg[2]
+    vx = p[i].vel[0] - vel_cg[0]
+    vy = p[i].vel[1] - vel_cg[1]
+    vz = p[i].vel[2] - vel_cg[2]
     vx2 = vx * vx
     vy2 = vy * vy
     vz2 = vz * vz
@@ -21,9 +21,9 @@ def calc_r_and_dens(p, pos_cg, vel_cg):
     ene = 0.5*v2 + p[i].pot + p[i].uene
 
     if(ene < 0):
-      x = p[i].posx - pos_cg[0]
-      y = p[i].posy - pos_cg[1]
-      z = p[i].posz - pos_cg[2]
+      x = p[i].pos[0] - pos_cg[0]
+      y = p[i].pos[1] - pos_cg[1]
+      z = p[i].pos[2] - pos_cg[2]
       x2 = x * x
       y2 = y * y
       z2 = z * z
