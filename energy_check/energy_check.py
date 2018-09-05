@@ -142,7 +142,7 @@ if __name__ == '__main__':
 	ene_diff, ene_s, ene_f = calc_energy_difference(p_s, p_f)
 	max_ene_error, max_time, ene_error_end, end_time = check_energy_error(time_data, max_timestep)
 
-	ene_error_rata1 = abs(ene_error_end / ene_f) * 100
+	ene_error_rata1 = abs(ene_error_end / ene_s) * 100
 	ene_error_rate2 = abs(ene_error_end / ene_diff) * 100
 	
 	sys.stderr.write('\nTotal Energy Of Start(Ene_s) : %e\n' %ene_s)
@@ -152,7 +152,7 @@ if __name__ == '__main__':
 	sys.stderr.write('\nMax Energy Error(Err_m) : %e, Time : %lf\n' %(max_ene_error, max_time))
 	sys.stderr.write('Energy Error Of End(Err_e) : %e, Time : %lf\n\n' %(ene_error_end, end_time))
 
-	sys.stderr.write('Energy Error Rate(Ene_err_rata1 = |Err_e / Ene_e| * 100) : %.3lf per\n' %ene_error_rata1)
+	sys.stderr.write('Energy Error Rate(Ene_err_rata1 = |Err_e / Ene_s| * 100) : %.3lf per\n' %ene_error_rata1)
 	sys.stderr.write('Energy Error Rate(Ene_err_rata2 = |Err_e / Ene_d| * 100): %.3lf per\n\n' %ene_error_rate2)
 
 	if(view == 1):
