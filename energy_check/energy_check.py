@@ -5,7 +5,7 @@ import math
 from common import *
 
 ## visualization(if view = 0, no plot. if view = 1, plot) ##
-view = 1
+view = 0
 ############################################################
 if(view == 1):
 	import matplotlib as mpl
@@ -87,11 +87,7 @@ def calc_energy_difference(p_s, p_f):
 	ene_f = calc_energy(p_f)
 	ene_diff = ene_f - ene_s
 
-	sys.stderr.write('\nTotal Energy Of Start(E_s) : %e\n' %ene_s)
-	sys.stderr.write('Total Energy Of End(E_e) : %e\n' %ene_f)
-	sys.stderr.write('Energy Differece(E_d = E_e - E_s) : %e\n' %ene_diff)
-
-	return ene_diff
+	return ene_diff, ene_s, ene_f
 
 def check_energy_error(time_data, max_time):
 	ene_init = time_data[0,1]
@@ -143,14 +139,21 @@ if __name__ == '__main__':
 	p_s.sort(key=operator.attrgetter("p_id"))
 	p_f.sort(key=operator.attrgetter("p_id"))
 
-	ene_diff = calc_energy_difference(p_s, p_f)
-
+	ene_diff, ene_s, ene_f = calc_energy_difference(p_s, p_f)
 	max_ene_error, max_time, ene_error_end, end_time = check_energy_error(time_data, max_timestep)
-	ene_error_rate = abs(ene_error_end / ene_diff) * 100
 
-	sys.stderr.write('\nMax Energy Error(E_m) : %e, Time : %lf\n' %(max_ene_error, max_time))
-	sys.stderr.write('Energy Error Of End(E_e) : %e, Time : %lf\n\n' %(ene_error_end, end_time))
-	sys.stderr.write('Energy Error Rate(E_r = |E_e / E_d| * 100): %.3lf per\n\n' %ene_error_rate)
+	ene_error_rata1 = abs(ene_error_end / ene_f) * 100
+	ene_error_rate2 = abs(ene_error_end / ene_diff) * 100
+	
+	sys.stderr.write('\nTotal Energy Of Start(Ene_s) : %e\n' %ene_s)
+	sys.stderr.write('Total Energy Of End(Ene_e) : %e\n' %ene_f)
+	sys.stderr.write('Energy Differece(Ene_d = Ene_e - Ene_s) : %e\n' %ene_diff)
+
+	sys.stderr.write('\nMax Energy Error(Err_m) : %e, Time : %lf\n' %(max_ene_error, max_time))
+	sys.stderr.write('Energy Error Of End(Err_e) : %e, Time : %lf\n\n' %(ene_error_end, end_time))
+
+	sys.stderr.write('Energy Error Rate(Ene_err_rata1 = |Err_e / Ene_e| * 100) : %.3lf per\n' %ene_error_rata1)
+	sys.stderr.write('Energy Error Rate(Ene_err_rata2 = |Err_e / Ene_d| * 100): %.3lf per\n\n' %ene_error_rate2)
 
 	if(view == 1):
 		visualization(time_data, args[3])
