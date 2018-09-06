@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 from common import *
 
 box_size = 1e+12
+
 def plot(x_tag, y_tag, z_tag, pos_cg):
 	fig = plt.figure()
 	clr = ["red", "blue"]
@@ -27,6 +28,26 @@ def plot(x_tag, y_tag, z_tag, pos_cg):
 	plt.gca().set_aspect('equal', adjustable='box')
 	plt.show()
 	plt.close()
+
+def plot2(x_tag, y_tag, z_tag, pos_cg):
+  fig = plt.figure()
+  clr = ["red", "blue"]
+
+  for tag in range(2):
+    for i in range(len(x_tag[tag])):
+      x_tag[tag][i] = x_tag[tag][i] - pos_cg[0]
+      y_tag[tag][i] = y_tag[tag][i] - pos_cg[1]
+      z_tag[tag][i] = z_tag[tag][i] - pos_cg[2]
+
+  ax = [[],[]]
+  for i in range(2):
+    ax[i] = fig.add_subplot(1, 2, i+1, aspect=1.0)
+    ax[i].scatter(x_tag[i],y_tag[i], c=clr[i], s=1, edgecolor=clr[i], alpha=0.1)
+    ax[i].set_xlim(-box_size, box_size)
+    ax[i].set_ylim(-box_size, box_size)
+    ax[i].set_xlabel(r'$x$')
+    ax[i].set_ylabel(r'$y$')
+  plt.show()
 
 def calc_cg(x, y, z, dens):
 	row_sum = 0.
@@ -80,6 +101,7 @@ if __name__ == '__main__':
 
 		pos_cg = np.array([0., 0., 0.])
 		pos_cg = calc_cg(x, y, z, dens)
-		plot(x_tag, y_tag, z_tag, pos_cg)
+		#plot(x_tag, y_tag, z_tag, pos_cg)
+		plot2(x_tag, y_tag, z_tag, pos_cg)
 
 
