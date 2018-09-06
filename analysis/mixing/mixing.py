@@ -39,14 +39,22 @@ def plot2(x_tag, y_tag, z_tag, pos_cg):
       y_tag[tag][i] = y_tag[tag][i] - pos_cg[1]
       z_tag[tag][i] = z_tag[tag][i] - pos_cg[2]
 
-  ax = [[],[]]
+  ax = [[],[], []]
   for i in range(2):
-    ax[i] = fig.add_subplot(1, 2, i+1, aspect=1.0)
+    ax[i] = fig.add_subplot(1, 3, i+1, aspect=1.0)
     ax[i].scatter(x_tag[i],y_tag[i], c=clr[i], s=1, edgecolor=clr[i], alpha=0.1)
     ax[i].set_xlim(-box_size, box_size)
     ax[i].set_ylim(-box_size, box_size)
     ax[i].set_xlabel(r'$x$')
     ax[i].set_ylabel(r'$y$')
+  ax[2] = fig.add_subplot(1, 3, 3, aspect=1.0)
+  ax[2].scatter(x_tag[0],y_tag[0], c=clr[0], s=1, edgecolor=clr[0], alpha=0.1)
+  ax[2].scatter(x_tag[1],y_tag[1], c=clr[1], s=1, edgecolor=clr[1], alpha=0.1)
+  ax[2].set_xlim(-box_size, box_size)
+  ax[2].set_ylim(-box_size, box_size)
+  ax[2].set_xlabel(r'$x$')
+  ax[2].set_ylabel(r'$y$')
+
   plt.show()
 
 def calc_cg(x, y, z, dens):
