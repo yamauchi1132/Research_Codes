@@ -21,19 +21,22 @@ if __name__ == '__main__':
 	mass.extend(data[0, :])
 	result1.extend(data[1, :])
 	result2.extend(data[2, :])
-	# result3.extend(data[3, :])
-	# result4.extend(data[4. :])
+	result3.extend(data[3, :])
+	result4.extend(data[4, :])
 
 	fig = plt.figure()
-	plt.plot(mass, result1, label="pori1.5, vel10")
-	plt.plot(mass, result2, label="pori2.5, vel10")
+	plt.plot(mass, result1, label=r'$n=1.5,v_{\infty}=10 km\,s^{-1}$')
+	plt.plot(mass, result2, label=r'$n=2.5,v_{\infty}=10 km\,s^{-1}$')
+	plt.plot(mass, result3, label=r'$n=1.5,v_{\infty}=20 km\,s^{-1}$')
+	plt.plot(mass, result4, label=r'$n=2.5,v_{\infty}=20 km\,s^{-1}$')
 
-	plt.xlabel('Mass[Msun]', fontsize=18)
-	plt.ylabel('Rp(R1+R2)', fontsize=18)
+	plt.xlabel(r'$Mass\,[M_{\odot}]$', fontsize=18)
+	plt.ylabel(r'$r_{p}\,[R_{1}+R_{2}]$', fontsize=18)
 	plt.tick_params(labelsize=18)
-	plt.legend(fontsize=18)
+	plt.legend(fontsize=12)
 	mpl.rcParams['axes.xmargin'] = 0
 	mpl.rcParams['axes.ymargin'] = 0
 	plt.tight_layout()
-	plt.show()
+	#plt.show()
+	plt.savefig("result.png", dpi=600)
   

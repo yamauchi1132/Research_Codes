@@ -41,13 +41,13 @@ def plot(r_list, lmoment_list, args):
   mpl.rcParams['agg.path.chunksize'] = 10000
 
   for i in range(len(r_list)):
-    plt.plot(r_list[i], lmoment_list[i], '.', ms=0.5, label=args[i+1])
+    plt.plot(r_list[i], lmoment_list[i], '.', ms=0.5)
   
   plt.xscale('log')
   plt.yscale('log')
 
-  plt.xlabel(r'$r\,[cm]$')
-  plt.ylabel(r'$\L$')
+  plt.xlabel(r'$radius\,[cm]$')
+  plt.ylabel(r'$L$')
 
   plt.legend(fontsize=10)
   plt.tick_params(labelsize=10)
