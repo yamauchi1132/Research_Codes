@@ -25,13 +25,14 @@ if __name__ == '__main__':
 	result4.extend(data[4, :])
 
 	fig = plt.figure()
-	plt.plot(mass, result1, label=r'$n=1.5,v_{\infty}=10 km\,s^{-1}$')
-	plt.plot(mass, result2, label=r'$n=2.5,v_{\infty}=10 km\,s^{-1}$')
-	plt.plot(mass, result3, label=r'$n=1.5,v_{\infty}=20 km\,s^{-1}$')
-	plt.plot(mass, result4, label=r'$n=2.5,v_{\infty}=20 km\,s^{-1}$')
-
+	plt.plot(mass, result1, color='blue', linestyle='solid')
+	plt.plot(mass, result2, color='red', linestyle='solid')
+	plt.plot(mass, result3, color='blue', linestyle='dashed')
+	plt.plot(mass, result4, color='red', linestyle='dashed')
+	# label=r'$n=1.5,v_{\infty}=10 km\,s^{-1}$'
 	plt.xlabel(r'$Mass\,[M_{\odot}]$', fontsize=18)
 	plt.ylabel(r'$r_{p}\,[R_{1}+R_{2}]$', fontsize=18)
+	plt.xscale("log")
 	plt.tick_params(labelsize=18)
 	plt.legend(fontsize=12)
 	mpl.rcParams['axes.xmargin'] = 0

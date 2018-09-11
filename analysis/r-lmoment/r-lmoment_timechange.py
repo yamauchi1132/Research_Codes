@@ -59,6 +59,31 @@ def plot(r_list, lmoment_list, args):
   # plt.savefig("r_lmoment.png", dpi=600)
   plt.close()
 
+def plot2(r_list, lmoment_list, args):
+  fig = plt.figure()
+  mpl.rcParams['agg.path.chunksize'] = 10000
+
+
+  plt.plot(r_list[0], lmoment_list[0], '.', ms=0.5, label=r'$1.0r_{p}$')
+  plt.plot(r_list[1], lmoment_list[1], '.', ms=0.5, label=r'$1.2r_{p}$')
+
+  plt.xscale('log')
+  plt.yscale('log')
+
+  plt.xlabel(r'$radius\,[cm]$', fontsize=18)
+  plt.ylabel(r'$L$', fontsize=18)
+
+  plt.legend(fontsize=14)
+  plt.tick_params(labelsize=18)
+  mpl.rcParams['axes.xmargin'] = 0
+  mpl.rcParams['axes.ymargin'] = 0
+  plt.tight_layout()
+  
+  # plt.show()
+  # plt.savefig("L_0.png", dpi=600)
+  plt.savefig("L_400.png", dpi=600)
+  plt.close()
+
 if __name__ == '__main__':
   args = sys.argv
 
@@ -82,4 +107,5 @@ if __name__ == '__main__':
     r_list.append(r)
     lmoment_list.append(lmoment)
 
-  plot(r_list, lmoment_list, args)
+  # plot(r_list, lmoment_list, args)
+  plot2(r_list, lmoment_list, args)

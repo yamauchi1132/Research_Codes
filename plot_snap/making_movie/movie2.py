@@ -67,7 +67,7 @@ if __name__ == '__main__':
     plt.tight_layout()
 
     ims.append([im1]+[im2])
-
-  ani = animation.ArtistAnimation(fig, ims, interval=100)
+    del tag, x, y, z, dens
+  ani = animation.ArtistAnimation(fig, ims, interval=60)
   ani.save('x_yAndx_z.mp4', writer="ffmpeg")
 plt.close()
