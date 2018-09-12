@@ -20,7 +20,7 @@ def calc_r_and_dens(p, pos_cg, vel_cg):
     v2 = vx2 + vy2 + vz2
     ene = 0.5*v2 + p[i].pot + p[i].uene
 
-    if(ene < 0):
+    if(ene > 0):
       x = p[i].pos[0] - pos_cg[0]
       y = p[i].pos[1] - pos_cg[1]
       z = p[i].pos[2] - pos_cg[2]
