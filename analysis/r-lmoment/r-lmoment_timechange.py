@@ -63,7 +63,6 @@ def plot2(r_list, lmoment_list, args):
   fig = plt.figure()
   mpl.rcParams['agg.path.chunksize'] = 10000
 
-
   plt.plot(r_list[0], lmoment_list[0], '.', ms=0.5, label=r'$1.0r_{p}$')
   plt.plot(r_list[1], lmoment_list[1], '.', ms=0.5, label=r'$1.2r_{p}$')
 
