@@ -48,7 +48,7 @@ def calc_inertia_tensor(p, pos_cg, vel_cg):
   #calculation of eigenvalue and Diagonal matrix
   #print(I)
   l, P = np.linalg.eig(I)
-  DI = np.linalg.inv(P) @ I @ P
+  #DI = np.linalg.inv(P) @ I @ P
   ######## CHECK ##############
   #print(DI)
   #print(np.diag(l))
