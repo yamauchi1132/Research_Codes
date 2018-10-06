@@ -12,9 +12,9 @@ dirname = '../data/sph_t%04d.dat'
 
 '''
 start, end, step = 100, 800, 100
-#start, end, step = 600, 1200, 100
 dirname = '../../run1/snap_unbound_10.0Msun_4.0Rsun_pori1.5_rp1.0R_vinf1.00e+0\
 6/sph_t%04d.dat'
+#start, end, step = 600, 1200, 100
 #dirname = '../../run2/snap_unbound_10.0Msun_4.0Rsun_pori1.5_rp1.2R_vinf1.00e+06/sph_t%04d.dat'
 '''
 max_r = 1e+13 #rsun = 695700e+5;

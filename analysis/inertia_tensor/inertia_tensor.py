@@ -7,6 +7,8 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 from common import *
 
+max_r = 1e+13 #rsun = 695700e+5;
+
 start, end, step = 600, 800, 100
 def calc_inertia_tensor(p, pos_cg, vel_cg):
   I = np.zeros((3,3))
@@ -29,7 +31,7 @@ def calc_inertia_tensor(p, pos_cg, vel_cg):
     z2 = z * z
     r2 = x2 + y2 + z2
 
-    if(ene < 0):
+    if(r < max_r and ene < 0):
       I[0,0] += (r2-x2)
       I[1,1] += (r2-y2)
       I[2,2] += (r2-z2)
@@ -66,7 +68,7 @@ def plot(time, l1, l2, l3):
   plt.plot(time, l2, label='l2')
   plt.plot(time, l3, label='l3')
 
-  #plt.xscale('log')
+  plt.xscale('log')
   plt.yscale('log')
 
   '''
