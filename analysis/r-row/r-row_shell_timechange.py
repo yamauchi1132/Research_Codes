@@ -98,7 +98,7 @@ if __name__ == '__main__':
     p.sort(key=operator.attrgetter("r_cg"))
 
     if make_slide == 0:
-      r, dens = calc_r_and_dens2(p, pos_cg, vel_cg)
+      r, dens = calc_r_and_dens(p, pos_cg, vel_cg)
     else :
       if file == 1:
         r, dens = calc_r_and_dens_pori(p, pos_cg, vel_cg)
