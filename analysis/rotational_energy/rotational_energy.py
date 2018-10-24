@@ -21,10 +21,14 @@ def calc_rotational_energy(p, pos_cg, vel_cg):
     x2 = x * x
     y2 = y * y
     z2 = z * z
-    r_1 = math.sqrt(x2 + y2 + z2)
+    r_2 = x2 + y2 + z2
 
     l_phi = x*vy - y*vx
-    omga = l_phi / (r_1 * r_1)
+    omga = l_phi / (r_2)
+
+    sum_rotational_energy += p[i].mass * r_2 * omga * omga
+
+  print(sum_rotational_energy)
 
 if __name__ == '__main__':
   args = sys.argv
