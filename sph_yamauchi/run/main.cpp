@@ -1,0 +1,431 @@
+#include <iostream>
+#include <stdio.h>
+#include <vector>
+#include <cassert>
+#include <cstring>
+#include <limits>
+
+enum KernelType {CubicSpline = 0, WendlandC2 = 1, WendlandC4 = 2};
+inline void debugFunction(const char * const literal);
+template <class Tdinfo,
+          class Tsph,
+          class Tbhns,
+          class Tmsls,
+          class Tdensity,
+          class Thydro,
+          class Tgravity>
+void calcSPHKernel(Tdinfo & dinfo,
+                   Tsph & sph,
+                   Tbhns & bhns,
+                   Tmsls & msls,
+                   Tdensity & density,
+                   Thydro & hydro,
+                   Tgravity & gravity);
+
+#include "particle_simulator.hpp"
+#include "hdr_time.hpp"
+#include "hdr_run.hpp"
+#ifdef USE_INTRINSICS
+#include "vector_x86.hpp"
+#endif
+#include "hdr_dimension.hpp"
+#include "hdr_kernel.hpp"
+#include "hdr_sph.hpp"
+
+#ifdef USE_IDEAL
+#include "hdr_igas.hpp"
+#elif defined USE_HELMHOLTZ
+#include "hdr_hgas.hpp"
+#else
+#error Use what eos is ?
+#endif
+
+#include "hdr_msls.hpp"
+#include "hdr_bhns.hpp"
+#include "hdr_density.hpp"
+#include "hdr_hydro.hpp"
+#include "hdr_gravity.hpp"
+#ifdef MULTI_WALK
+#include "use_gpu.hpp"
+#endif
+
+
+inline void debugFunction(const char * const literal) {
+  if(PS::Comm::getRank() == 0) {
+    printf("hogehogehoge %.16e %s\n", RP::Time, literal);
+    fflush(stdout);
+  }
+}
+
+template <class Tsph>
+void calcAbarZbar(Tsph & sph) {
+#ifdef USE_XEONPHI
+#pragma omp parallel for
+#endif
+  for(PS::S64 i = 0; i < sph.getNumberOfParticleLocal(); i++) {
+    sph[i].calcAbarZbar();
+  }
+}
+
+template <class Tsph>
+void referEquationOfState(Tsph & sph) {
+  if(RP::FlagDamping != 1) {
+    for(PS::S64 i = 0; i < sph.getNumberOfParticleLocal(); i++) {
+      sph[i].referEquationOfState();
+    }
+  } else {
+    for(PS::S64 i = 0; i < sph.getNumberOfParticleLocal(); i++) {
+      sph[i].referEquationOfStateDamping1();
+    }
+  }
+}
+
+template <class Tsph>
+void calcReleasedNuclearEnergy(Tsph & sph) {
+  for(PS::S64 i = 0; i < sph.getNumberOfParticleLocal(); i++) {
+    sph[i].calcReleasedNuclearEnergy();
+  }
+}
+
+/*
+  template <class Tsph>
+  void predictReleasedNuclearEnergy(Tsph & sph) {
+  for(PS::S64 i = 0; i < sph.getNumberOfParticleLocal(); i++) {
+  sph[i].dens0 = sph[i].dens;
+  sph[i].temp0 = sph[i].temp;
+  sph[i].cmps0 = sph[i].cmps;
+  sph[i].dnuc = GeneralSPH::calcReleasedNuclearEnergy(RP::Timestep,
+  sph[i].dens,
+  sph[i].temp,
+  sph[i].cmps.getPointer());
+  //sph[i].enuc += sph[i].dnuc;
+  }
+  }
+
+  template <class Tsph>
+  void correctReleasedNuclearEnergy(Tsph & sph) {
+  for(PS::S64 i = 0; i < sph.getNumberOfParticleLocal(); i++) {
+  sph[i].cmps  = sph[i].cmps0;
+  sph[i].dnuc  = GeneralSPH::calcReleasedNuclearEnergy(RP::Timestep*0.5,
+  sph[i].dens0,
+  sph[i].temp0,
+  sph[i].cmps.getPointer());
+  sph[i].dnuc += GeneralSPH::calcReleasedNuclearEnergy(RP::Timestep*0.5,
+  sph[i].dens,
+  sph[i].temp,
+  sph[i].cmps.getPointer());
+  sph[i].enuc += sph[i].dnuc;
+  }
+  }
+*/
+
+template <class Tsph>
+void calcBalsaraSwitch(Tsph & sph) {
+#ifdef USE_XEONPHI
+#pragma omp parallel for
+#endif
+  for(PS::S64 i = 0; i < sph.getNumberOfParticleLocal(); i++) {
+    sph[i].calcBalsaraSwitch();
+  }
+}
+
+template <class Tsph,
+          class Tbhns>
+void addAdditionalForce(Tsph & sph,
+                        Tbhns & bhns) {
+  if(RP::FlagDamping != 2) {
+#ifdef USE_XEONPHI
+#pragma omp parallel for
+#endif
+    for(PS::S64 i = 0; i < sph.getNumberOfParticleLocal(); i++) {
+      sph[i].addAdditionalForce();
+    }
+  } else {
+#ifdef USE_XEONPHI
+#pragma omp parallel for
+#endif
+    for(PS::S64 i = 0; i < sph.getNumberOfParticleLocal(); i++) {
+      sph[i].addAdditionalForceDamping2();
+    }
+    for(PS::S64 i = 0; i < bhns.getNumberOfParticleLocal(); i++) {
+      bhns[i].addAdditionalForceDamping2();
+    }
+  }
+}
+
+template <class Tsph>
+void calcAlphaDot(Tsph & sph) {
+#ifdef USE_XEONPHI
+#pragma omp parallel for
+#endif
+  for(PS::S64 i = 0; i < sph.getNumberOfParticleLocal(); i++) {
+    sph[i].calcAlphaDot();
+  }
+}
+
+template <class Tsph>
+void sumAcceleration(Tsph & sph) {
+  if(RP::FlagGravity == 0) {
+#ifdef USE_XEONPHI
+#pragma omp parallel for
+#endif
+    for(PS::S64 i = 0; i < sph.getNumberOfParticleLocal(); i++) {
+      sph[i].copyAcceleration();
+    }
+  } else {
+    for(PS::S64 i = 0; i < sph.getNumberOfParticleLocal(); i++) {
+      sph[i].sumAcceleration();
+    }
+  }
+}
+
+template <class Tsph,
+          class Tbhns>
+PS::F64 calcPotentialEnergy(Tsph & sph,
+                            Tbhns & bhns) {
+  PS::F64 eloc = 0.;
+  for(PS::S64 i = 0; i < sph.getNumberOfParticleLocal(); i++) {
+    eloc += sph[i].calcPotentialEnergy();
+  }
+  for(PS::S64 i = 0; i < bhns.getNumberOfParticleLocal(); i++) {
+    eloc += bhns[i].calcPotentialEnergy();
+  }
+  PS::F64 eglb = PS::Comm::getSum(eloc);
+  return eglb;
+}
+
+template <class Tsph,
+          class Tbhns>
+PS::F64 calcEnergy(Tsph & sph,
+                   Tbhns & bhns) {
+  PS::F64 eloc = 0.;
+  if(RP::FlagDamping != 2) {
+    for(PS::S64 i = 0; i < sph.getNumberOfParticleLocal(); i++) {
+      eloc += sph[i].calcEnergy();
+    }
+    for(PS::S64 i = 0; i < bhns.getNumberOfParticleLocal(); i++) {
+      eloc += bhns[i].calcEnergy();
+    }
+  } else {
+    for(PS::S64 i = 0; i < sph.getNumberOfParticleLocal(); i++) {
+      eloc += sph[i].calcEnergyDamping2();
+    }
+    for(PS::S64 i = 0; i < bhns.getNumberOfParticleLocal(); i++) {
+      eloc += bhns[i].calcEnergyDamping2();
+    }
+  }
+  PS::F64 eglb = PS::Comm::getSum(eloc);
+  return eglb;
+}
+
+template <class Tsph>
+PS::F64 calcReleasedNuclearEnergyTotal(Tsph & sph) {
+  PS::F64 eloc = 0.;
+  for(PS::S64 i = 0; i < sph.getNumberOfParticleLocal(); i++) {
+    eloc += sph[i].mass * sph[i].enuc;
+  }
+  PS::F64 eglb = PS::Comm::getSum(eloc);
+  return eglb;
+}
+
+template <class Tsph>
+PS::F64vec calcMomentum(Tsph & sph) {
+  PS::F64vec momloc = 0.;
+  for(PS::S64 i = 0; i < sph.getNumberOfParticleLocal(); i++) {
+    momloc += sph[i].calcMomentum();
+  }
+  PS::F64vec momglb = PS::Comm::getSum(momloc);
+  return momglb;
+}
+
+template <class Tsph>
+PS::F64 calcTimestep(Tsph & sph) {
+  PS::S32 nloc = sph.getNumberOfParticleLocal();
+  PS::F64 dtc = RP::MaximumTimestep;
+  for(PS::S32 i = 0; i < nloc; i++) {
+    PS::F64 dttmp = sph[i].calcTimestep();
+    if(dttmp < dtc)
+      dtc = dttmp;
+  }
+  dtc = PS::Comm::getMinValue(dtc);
+
+  PS::F64 dt = RP::Timestep;
+  if(dt > dtc) {
+    while(dt > dtc) {
+      dt *= 0.5;
+      if(dt <= RP::MinimumTimestep) {
+	if(PS::Comm::getRank() == 0) {
+	  printf("Time: %.10f Timestep: %+e\n", RP::Time, dtc);
+	}
+	sph.writeParticleAscii("snap/smalldt.dat");
+	PS::Comm::barrier();
+	PS::Abort();
+      }
+    }        
+  } else if(2. * dt <= dtc && 2. * dt <= RP::MaximumTimestep) {
+    PS::F64 dt2 = 2. * dt;
+    if(RP::Time - (PS::S64)(RP::Time / dt2) * dt2 == 0.) {
+      dt *= 2.;
+    }
+  }
+
+  return dt;
+}
+
+template <class Tsph>
+void dumpHighEnergyParticle(Tsph & sph) {
+  bool floc = false;
+  for(PS::S32 i = 0; i < sph.getNumberOfParticleLocal(); i++) {
+    //PS::F64 umax = CalcEquationOfState::getEnergyMax(sph[i].dens, sph[i].abar, sph[i].zbar);
+    PS::F64 umax = CalcEquationOfState::getEnergyMax(sph[i].dens, sph[i].cmps);
+    if(sph[i].uene > umax) {
+      floc = true;
+    }
+  }
+  bool fglb = PS::Comm::synchronizeConditionalBranchOR(floc);
+  if(fglb) {
+    sph.writeParticleAscii("snap/hoge.dat");
+    PS::Finalize();
+    exit(0);
+  }
+}
+
+template <class Tdinfo,
+          class Tsph,
+          class Tbhns,
+          class Tmsls,
+          class Tdensity,
+          class Thydro,
+          class Tgravity>
+void calcSPHKernel(Tdinfo & dinfo,
+                   Tsph & sph,
+                   Tbhns & bhns,
+                   Tmsls & msls,
+                   Tdensity & density,
+                   Thydro & hydro,
+                   Tgravity & gravity) {
+  //#define NBODYLIKE
+  #ifdef NBODYLIKE
+  for(PS::S64 i = 0; i < sph.getNumberOfParticleLocal(); i++) {
+    sph[i].acc   = 0.0;
+    sph[i].acch  = 0.0;
+    sph[i].accg1 = 0.0;
+    sph[i].accg2 = 0.0;
+    sph[i].pot   = 0.0;
+    sph[i].pot3  = 0.0;        
+  }
+  addAdditionalForce(sph, bhns);
+#else
+  WT::start();
+  calcDensityKernel(dinfo, sph, density);
+    WT::accumulateCalcDensity();
+  WT::start();
+  calcAbarZbar(sph);
+  WT::accumulateOthers();
+  WT::start();
+  referEquationOfState(sph);
+  WT::accumulateReferEquationOfState();
+  WT::start();
+  calcBalsaraSwitch(sph);
+  WT::accumulateOthers();
+  WT::start();
+  calcGravityKernel(dinfo, sph, bhns, msls, gravity);
+  WT::accumulateCalcGravity();
+  WT::start();
+
+#ifdef MULTI_WALK
+  const PS::S32 n_walk_limit = 200;
+  const PS::S32 tag_max = 1;
+  hydro.calcForceAllAndWriteBackMultiWalk(DispatchKernel_HydroForce,
+					  RetrieveKernel_HydroForce,
+					  tag_max,
+					  sph,
+					  dinfo,
+					  n_walk_limit);  
+#else
+  hydro.calcForceAllAndWriteBack(calcHydro(), sph, dinfo);
+#endif
+
+  //hydro.calcForceAllAndWriteBack(calcHydro(), sph, dinfo);
+  WT::accumulateCalcHydro();
+  WT::start();
+  sumAcceleration(sph);
+  addAdditionalForce(sph, bhns);
+  calcAlphaDot(sph);
+  RP::KernelSupportRadiusMaximum = calcKernelSupportRadiusMaximum(sph);
+  WT::accumulateOthers();	
+#endif
+}
+
+int main(int argc, char **argv)
+{
+  PS::Initialize(argc, argv);
+  PS::DomainInfo dinfo;
+  dinfo.initialize();
+  PS::ParticleSystem<GeneralSPH> sph;
+  sph.initialize();
+  sph.createParticle(0);
+  sph.setNumberOfParticleLocal(0);
+  PS::ParticleSystem<MassLess> msls;
+  msls.initialize();
+  msls.createParticle(0);
+  msls.setNumberOfParticleLocal(0);
+  PS::ParticleSystem<BlackHoleNeutronStar> bhns;
+  bhns.initialize();
+  bhns.createParticle(0);
+  bhns.setNumberOfParticleLocal(0);
+  PS::TreeForForceShort<Density, DensityEPI, DensityEPJ>::Gather density;
+
+#ifdef MULTI_WALK
+  density.initialize(0, 0.7, 8, 256);
+#else
+  density.initialize(0);
+#endif
+  PS::TreeForForceShort<Hydro, HydroEPI, HydroEPJ>::Symmetry hydro;
+#ifdef MULTI_WALK
+  hydro.initialize(0, 0.7, 8, 256);
+#else
+  hydro.initialize(0);
+#endif
+  PS::TreeForForce<PS::SEARCH_MODE_LONG, Gravity, GravityEPI, GravityEPJ,
+		   PS::GravityMonopole, PS::GravityMonopole, PS::GravitySPJ> gravity;
+  //  160610 from
+#ifdef MULTI_WALK
+  gravity.initialize(0, 0.5, 8, 256);
+#else
+  gravity.initialize(0, 0.5);
+#endif
+  //    gravity.initialize(0, 0.4);
+  //  160610 to
+
+  initializeSimulation();
+
+  int num_procs;
+  int my_proc;
+  MPI_Comm_size(MPI_COMM_WORLD, &num_procs);
+  MPI_Comm_rank(MPI_COMM_WORLD, &my_proc);
+
+#ifdef MULTI_WALK
+  setup_gpu(my_proc);
+#endif
+
+  if(atoi(argv[1]) == 0) {
+    startSimulation(argv, dinfo, sph, bhns, msls, density, hydro, gravity);
+  } else {
+    restartSimulation(argv, dinfo, sph, bhns, msls);
+  }
+  
+  fprintf(stderr, "\nparticle number is %d\n", sph.getNumberOfParticleGlobal());
+
+  loopSimulation(dinfo, sph, bhns, msls, density, hydro, gravity);
+
+  finalizeSimulation(dinfo, sph, bhns, msls);
+
+#ifdef MULTI_WALK
+  reset_gpu(my_proc);
+#endif
+
+  PS::Finalize();
+
+  return 0;
+}
