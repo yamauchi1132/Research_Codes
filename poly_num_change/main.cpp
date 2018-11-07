@@ -108,6 +108,7 @@ void change_poly_num(Particle *p, long long int N) {
     double new_k = p[i].pres / pow(p[i].dens, new_ganma);
     double new_uene = (new_k / new_ganma-1) * pow(p[i].dens, new_ganma-1);
     //printf("%e %e %e %e %e\n", p[i].pos[0], p[i].pos[1], p[i].pos[2], p[i].uene, new_uene);
+    p[i].uene = new_uene;
   }
 }
 */
@@ -135,7 +136,7 @@ int main(int argc, char **argv) {
 
   change_poly_num(p, N);
 
-  //making_data_simulation(p, N);
+  making_data_simulation(p, N);
   making_data(p, N);
 
   return 0;
