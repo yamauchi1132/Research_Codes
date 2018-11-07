@@ -36,7 +36,7 @@ void making_data_simulation(Particle *p, long long int N) {
   char data_name[256];
   char head_name[256];
 
-  sprintf(data_name, "%s/final.dat", dir);
+  sprintf(data_name, "%s/final.data", dir);
   sprintf(head_name, "%s/final.head", dir);
 
   data = fopen(data_name, "w");
@@ -71,7 +71,7 @@ void making_data(Particle *p, long long int N) {
 
   FILE *data;
   char data_name[256];
-  sprintf(data_name, "%s/final.data", dir);
+  sprintf(data_name, "%s/final.dat", dir);
   data = fopen(data_name, "w");
 
   for(int i = 0; i < N; i++) {
@@ -94,14 +94,23 @@ void making_data(Particle *p, long long int N) {
 }
 
 void change_poly_num(Particle *p, long long int N) {
-  for(int i = 0; i < N; i++) {
+    for(int i = 0; i < N; i++) {
     // double new_uene = p[i].pres / ((new_ganma - 1) * p[i].dens);
     double ratio = (old_ganma - 1) / (new_ganma - 1);
     double new_uene = ratio * p[i].uene;
+    //printf("%e %e %e %e %e\n", p[i].pos[0], p[i].pos[1], p[i].pos[2], p[i].uene, new_uene);
     p[i].uene = new_uene;
   }
 }
-
+/*
+void change_poly_num(Particle *p, long long int N) {
+  for(int i = 0; i < N; i++) {
+    double new_k = p[i].pres / pow(p[i].dens, new_ganma);
+    double new_uene = (new_k / new_ganma-1) * pow(p[i].dens, new_ganma-1);
+    //printf("%e %e %e %e %e\n", p[i].pos[0], p[i].pos[1], p[i].pos[2], p[i].uene, new_uene);
+  }
+}
+*/
 int main(int argc, char **argv) {
   if(argc != 2) {
     fprintf(stderr, "Error : No input file\n");
