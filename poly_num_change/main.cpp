@@ -56,7 +56,7 @@ void making_data_simulation(Particle *p, long long int N) {
   }
 
   //make header firle
-  fprintf(head, "+0.000000e+00 +1.0e+4 1.0e+3 1.0e+4\n");
+  fprintf(head, "+0.000000e+00 +1.0e+6 1.0e+4 1.0e+4\n");
   fprintf(head, "0 0\n");
   fprintf(head, "+2.000000e+00 +1.000000e-01\n");
   fprintf(head, "+0.000000e+00 +0.000000e+00\n");
