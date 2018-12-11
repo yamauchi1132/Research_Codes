@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import multiprocessing as mp
 
+fsize = 14
 if __name__ == '__main__':
   p_num = []
   dens_t = []
@@ -35,19 +36,19 @@ if __name__ == '__main__':
   x = p_num
   y = all_t
   y2 = all_tg
-  plt.plot(x, y, label="CPU(core i5 4core)")
-  plt.plot(x, y2, label="GPU(GTX 1080)")
+  plt.plot(x, y, label="CPU(core i5 4core+SIMD)", marker='o', ms=10, linewidth=2.0, color='black')
+  plt.plot(x, y2, label="GPU(GTX 1080)", marker='D', ms=10, linewidth=2.0, color='black', linestyle='dashed')
 
   plt.xscale('log')
   plt.yscale('log')
-  plt.xlabel('number of particle', fontsize=18)
-  plt.ylabel('time (s)', fontsize=18)
-  plt.tick_params(labelsize=18)
-  plt.legend(fontsize=18)
+  plt.xlabel('Number of particles', fontsize=fsize)
+  plt.ylabel('Time (s)', fontsize=fsize)
+  plt.tick_params(labelsize=fsize)
+  plt.legend(fontsize=fsize)
   mpl.rcParams['axes.xmargin'] = 0
   mpl.rcParams['axes.ymargin'] = 0
   plt.tight_layout()
   
-  #plt.show()
-  plt.savefig("time_two_body.png", dpi=600)
+  # plt.show()
+  plt.savefig("time_two_body.pdf", transparent=True, dpi=300, bbox_inches = 'tight', pad_inches = 0)
   plt.close()

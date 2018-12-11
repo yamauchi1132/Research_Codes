@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from common import *
 from make_slide import *
 
-make_slide = 0
+make_slide = 1
 
 def calc_r_cg(p, pos_cg):
   dx = p.pos[0] - pos_cg[0]

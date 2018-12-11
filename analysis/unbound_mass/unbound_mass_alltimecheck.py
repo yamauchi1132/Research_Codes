@@ -7,10 +7,10 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 from common import *
 
-dirname = "../data/sph_t%04d.dat"
-start = 600
-end = 800
-step = 1
+dirname = "data_thesis/snap_unbound_10.0Msun_4.0Rsun_pori1.5_rp1.0R_vinf1.00e+06/sph_t%04d.dat"
+start = 100
+end = 1700
+step = 100
 
 Msun = 1.989e+33
 
@@ -74,4 +74,5 @@ if __name__ == '__main__':
     result_unbound.append(m_unbound)
     time.append(t*1e+4)
 
-  plot(result_unbound, time)
+  # plot(result_unbound, time)
+  plot_thesis(result_unbound, time)

@@ -5,22 +5,23 @@ import numpy as np
 import multiprocessing as mp
 
 box_size = 5.5
-#Nnode = 9
-Nnode = 3
-# dat_num = [0, 21, 41, 96, 153, 178, 191, 212, 299]
-dat_num = [0,191, 299]
+Nnode = 9
+# Nnode = 3
+dat_num = [0, 21, 41, 96, 153, 178, 191, 212, 299]
+# dat_num = [0,191, 299]
 
-'''
+
 tag = [[], [], [], [], [], [], [], [], []]
 x = [[], [], [], [], [], [], [], [], []]
 y = [[], [], [], [], [], [], [], [], []]
 dens = [[], [], [], [], [], [], [], [], []]
-'''
 
+'''
 tag = [[], [], []]
 x = [[], [], []]
 y = [[], [], []]
 dens = [[], [], []]
+'''
 for n in range(Nnode):
   data = np.loadtxt("sph_t%04d.dat" % (dat_num[n]))
   tag[n].append(data[:,0])

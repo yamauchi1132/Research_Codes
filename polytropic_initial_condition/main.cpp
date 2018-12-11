@@ -24,6 +24,7 @@ int make_uniform_sphere(Particle *p, double dt)
           p[num].z = k;
           p[num].r = sqrt(r_p);
           num++;
+          //printf("%e %e %e\n", i, j, k);
         }
       }
     }

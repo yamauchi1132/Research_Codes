@@ -20,6 +20,9 @@ def calc_r_and_dens_pori(p, pos_cg, vel_cg):
     dens.append(p[i].dens)
     
     if(i+100 >= len(p)):
+      r.append(r_1)
+      dens.append(1e-10)
+      '''
       dr = r_1 - math.sqrt(p[i-100].pos[0]**2+p[i-100].pos[1]**2+p[i-100].pos[2]**2)
       drow = p[i].dens - p[i-100].dens
       a = drow / dr
@@ -28,6 +31,7 @@ def calc_r_and_dens_pori(p, pos_cg, vel_cg):
       r_next = (drow_row_next / a) + r_1
       r.append(1.5e+12)
       dens.append(row_next)
+      '''
 
   return r, dens
 

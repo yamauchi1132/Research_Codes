@@ -8,8 +8,8 @@ double G = 6.67259e-8; //gravittational constant
 double eps = 1e-6; 
 
 //////// you need to set ////////
-double MASS = 20*msun; //mass of real star
-double RADIUS = 6.0*rsun; //radius of real sta
+double MASS = 1.0*msun; //mass of real star
+double RADIUS = 1.0*rsun; //radius of real sta
 double pori_num = 1.5; //poritorope number
 //double pori_num = 2.5; //poritorope number
 /////////////////////////////////

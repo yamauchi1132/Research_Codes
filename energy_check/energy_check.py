@@ -5,7 +5,7 @@ import math
 from common import *
 
 ## visualization(if view = 0, no plot. if view = 1, plot) ##
-view = 0
+view = 1
 ############################################################
 if(view == 1):
 	import matplotlib as mpl

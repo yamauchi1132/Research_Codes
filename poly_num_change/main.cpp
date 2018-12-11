@@ -95,10 +95,10 @@ void making_data(Particle *p, long long int N) {
 
 void change_poly_num(Particle *p, long long int N) {
     for(int i = 0; i < N; i++) {
-    // double new_uene = p[i].pres / ((new_ganma - 1) * p[i].dens);
+    //double new_uene = p[i].pres / ((new_ganma - 1) * p[i].dens);
     double ratio = (old_ganma - 1) / (new_ganma - 1);
     double new_uene = ratio * p[i].uene;
-    //printf("%e %e %e %e %e\n", p[i].pos[0], p[i].pos[1], p[i].pos[2], p[i].uene, new_uene);
+    // printf("%e %e %e %e %e\n", p[i].pos[0], p[i].pos[1], p[i].pos[2], p[i].uene, new_uene);
     p[i].uene = new_uene;
   }
 }
