@@ -66,7 +66,13 @@ def calc_energy_ratio(p, total_energy):
   kinetic_ene = calc_kinetic_energy(p)
   binding_ene = kinetic_ene - total_energy
   #k_e_inf = 0.5 * ((M1*M2)/(M1+M2)) * vinf * vinf
-  energy_ratio = kinetic_ene / binding_ene
+  energy_ratio = binding_ene / kinetic_ene
+
+  m = 0.
+  for i in range(len(p)//2):
+    m += p[i].mass
+  r_eff = (2 * G * m * m) / binding_ene
+  print("%e"%r_eff)
   return energy_ratio
 
 if __name__ == '__main__':
