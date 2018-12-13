@@ -12,9 +12,9 @@ rsun = 695700e+5
 G = 6.67259e-8
 
 ########set parameter #######
-#vinf = 1e+06
-#M1 = 1.0 * msun
-#M2 = 1.0 * msun
+vinf = 1e+06
+M1 = 1.0 * msun
+M2 = 1.0 * msun
 ############################
 def calc_kinetic_energy(p):
   point_m1 = 0.
@@ -64,15 +64,20 @@ def calc_kinetic_energy(p):
 
 def calc_energy_ratio(p, total_energy):
   kinetic_ene = calc_kinetic_energy(p)
-  binding_ene = kinetic_ene - total_energy
-  #k_e_inf = 0.5 * ((M1*M2)/(M1+M2)) * vinf * vinf
-  energy_ratio = binding_ene / kinetic_ene
+  uene = 0.
+  for i in range(len(p)):
+    uene += p[i].mass*p[i].uene
+  binding_ene = total_energy - kinetic_ene - uene
+  sys.stderr.write('binding_ene : %e\n' %binding_ene)
+  # k_e_inf = 0.5 * ((M1*M2)/(M1+M2)) * vinf * vinf
+  energy_ratio = abs(binding_ene / kinetic_ene)
 
   m = 0.
   for i in range(len(p)//2):
     m += p[i].mass
   r_eff = (2 * G * m * m) / binding_ene
-  print("%e"%r_eff)
+  sys.stderr.write('Effective radius : %e\n' %(abs(r_eff)))
+  
   return energy_ratio
 
 if __name__ == '__main__':
