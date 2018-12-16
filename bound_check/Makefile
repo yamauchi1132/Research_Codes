@@ -9,4 +9,3 @@ clean:
 
 distclean:
 	make clean
-	rm -f *~
