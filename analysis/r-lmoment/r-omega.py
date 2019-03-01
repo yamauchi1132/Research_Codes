@@ -36,7 +36,28 @@ def calc_r_and_vel_phi(p, pos_cg, vel_cg):
 
   return r, omega
 
-def plot(r1, omega1, r2, omega2):
+def plot(r1, omega1):
+  fig = plt.figure()
+  mpl.rcParams['agg.path.chunksize'] = 10000
+  plt.plot(r1, omega1, '.', ms=0.5, label=1.0)
+
+  plt.xscale('log')
+  plt.yscale('log')
+
+  plt.xlabel(r'$r\,[cm]$', fontsize=18)
+  plt.ylabel(r'$\omega\,[rad\,s^{-1}]$', fontsize=18)
+
+  plt.legend(fontsize=18)
+  plt.tick_params(labelsize=18)
+  mpl.rcParams['axes.xmargin'] = 0
+  mpl.rcParams['axes.ymargin'] = 0
+  plt.tight_layout()
+  
+  plt.savefig("r_omega.pdf", transparent=True, dpi=300, bbox_inches = 'tight', pad_inches = 0)
+  plt.show()
+  plt.close()
+
+def plot2(r1, omega1, r2, omega2):
   fig = plt.figure()
   mpl.rcParams['agg.path.chunksize'] = 10000
   plt.plot(r1, omega1, '.', ms=0.5, label=1.0)
@@ -66,23 +87,24 @@ if __name__ == '__main__':
     exit()
 
   data1 = np.loadtxt(args[1])
-  data2 = np.loadtxt(args[2])
+  #data2 = np.loadtxt(args[2])
 
   p1 = [Particle() for i in range(len(data1))]
-  p2 = [Particle() for i in range(len(data2))]
+  #p2 = [Particle() for i in range(len(data2))]
 
   readfile(data1, p1)
-  readfile(data2, p2)
+  #readfile(data2, p2)
 
   pos1_cg = np.array([0.,0.,0.])
   vel1_cg = np.array([0.,0.,0.])
-  pos2_cg = np.array([0.,0.,0.])
-  vel2_cg = np.array([0.,0.,0.])
+  #pos2_cg = np.array([0.,0.,0.])
+  #vel2_cg = np.array([0.,0.,0.])
 
   pos1_cg, vel1_cg = calc_center_of_gravity(p1)
-  pos2_cg, vel2_cg = calc_center_of_gravity(p2)
+  #pos2_cg, vel2_cg = calc_center_of_gravity(p2)
 
   r1, omega1 = calc_r_and_vel_phi(p1, pos1_cg, vel1_cg)
-  r2, omega2 = calc_r_and_vel_phi(p2, pos2_cg, vel2_cg)
+  #r2, omega2 = calc_r_and_vel_phi(p2, pos2_cg, vel2_cg)
 
-  plot(r1, omega1, r2, omega2)
+  plot(r1, omega1)
+  #plot2(r1, omega1, r2, omega2)
