@@ -42,13 +42,13 @@ def calc_inertia_tensor(p, pos_cg, vel_cg):
     r = math.sqrt(r2)
 
     if(r < max_r and ene < 0):
-      I[0,0] += (r2-x2)
-      I[1,1] += (r2-y2)
-      I[2,2] += (r2-z2)
+      I[0,0] += p[i].mass*(r2-x2)
+      I[1,1] += p[i].mass*(r2-y2)
+      I[2,2] += p[i].mass*(r2-z2)
 
-      i_01 = -(x * y)
-      i_02 = -(x * z)
-      i_12 = -(y * z)
+      i_01 = -p[i].mass*(x * y)
+      i_02 = -p[i].mass*(x * z)
+      i_12 = -p[i].mass*(y * z)
 
       I[0,1] += i_01
       I[1,0] += i_01
@@ -60,6 +60,7 @@ def calc_inertia_tensor(p, pos_cg, vel_cg):
   #calculation of eigenvalue and Diagonal matrix
   #print(I)
   l, P = np.linalg.eig(I)
+  
   #DI = np.linalg.inv(P) @ I @ P
   ######## CHECK ##############
   #print(DI)
@@ -69,6 +70,7 @@ def calc_inertia_tensor(p, pos_cg, vel_cg):
   #print(np.dot(np.dot(P,np.diag(l)), np.linalg.inv(P))) 
   ##############################
   l_sort = np.sort(l)
+  
   return l_sort
 
 def plot(time, l1, l2, l3):
@@ -116,5 +118,5 @@ if __name__ == '__main__':
     l1_list.append(l[0])
     l2_list.append(l[1])
     l3_list.append(l[2])
-    
+
   plot(time_list, l1_list, l2_list, l3_list)

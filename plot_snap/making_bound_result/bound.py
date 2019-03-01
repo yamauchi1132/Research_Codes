@@ -31,13 +31,14 @@ if __name__ == '__main__':
 	plt.plot(mass, result4, color='red', linestyle='dashed', marker='v')
 	# label=r'$n=1.5,v_{\infty}=10 km\,s^{-1}$'
 	plt.xlabel(r'$Mass\,[M_{\odot}]$', fontsize=18)
-	plt.ylabel(r'$r_{p}\,[R_{1}+R_{2}]$', fontsize=18)
+	plt.ylabel(r'$\frac{r_{\rm{p}}}{R_1+R_2}$', fontsize=18)
 	plt.xscale("log")
 	plt.tick_params(labelsize=18)
 	plt.legend(fontsize=12)
 	mpl.rcParams['axes.xmargin'] = 0
 	mpl.rcParams['axes.ymargin'] = 0
 	plt.tight_layout()
-	#plt.show()
-	plt.savefig("result.png", dpi=600)
+	
+	plt.savefig("result.png", transparent=True, dpi=300, bbox_inches = 'tight', pad_inches = 0)
+	plt.show()
   

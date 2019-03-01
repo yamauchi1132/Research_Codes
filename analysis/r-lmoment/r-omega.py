@@ -30,8 +30,8 @@ def calc_r_and_vel_phi(p, pos_cg, vel_cg):
       r_1 = math.sqrt(x2 + y2 + z2)
       r.append(r_1)
 
-      v = math.sqrt(vx2 + vy2 + vz2)
-      w = v / r_1
+      v = x*vy - y*vx
+      w = v / (x2+y2)
       omega.append(w)
 
   return r, omega
