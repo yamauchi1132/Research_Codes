@@ -22,6 +22,7 @@ max_r = 1e+13 #rsun = 695700e+5;
 def calc_inertia_tensor(p, pos_cg, vel_cg):
   I = np.zeros((3,3))
   ene_neg_r = []
+  count = 0
   for i in range(len(p)):
     vx = p[i].vel[0] - vel_cg[0]
     vy = p[i].vel[1] - vel_cg[1]
@@ -42,13 +43,14 @@ def calc_inertia_tensor(p, pos_cg, vel_cg):
     r = math.sqrt(r2)
 
     if(r < max_r and ene < 0):
-      I[0,0] += p[i].mass*(r2-x2)
-      I[1,1] += p[i].mass*(r2-y2)
-      I[2,2] += p[i].mass*(r2-z2)
+      count = count + 1
+      I[0,0] += (r2-x2)
+      I[1,1] += (r2-y2)
+      I[2,2] += (r2-z2)
 
-      i_01 = -p[i].mass*(x * y)
-      i_02 = -p[i].mass*(x * z)
-      i_12 = -p[i].mass*(y * z)
+      i_01 = -(x * y)
+      i_02 = -(x * z)
+      i_12 = -(y * z)
 
       I[0,1] += i_01
       I[1,0] += i_01
@@ -56,12 +58,15 @@ def calc_inertia_tensor(p, pos_cg, vel_cg):
       I[2,0] += i_02
       I[1,2] += i_12
       I[2,1] += i_12
-
+  #print(I)
   #calculation of eigenvalue and Diagonal matrix
   #print(I)
   l, P = np.linalg.eig(I)
-  
-  #DI = np.linalg.inv(P) @ I @ P
+  #print(l)
+  #print(P)
+  DI = np.linalg.inv(P) @ I @ P
+  #print(DI)
+  #print("\n")
   ######## CHECK ##############
   #print(DI)
   #print(np.diag(l))
@@ -71,17 +76,26 @@ def calc_inertia_tensor(p, pos_cg, vel_cg):
   ##############################
   l_sort = np.sort(l)
   
-  return l_sort
+  return l_sort, count
 
-def plot(time, l1, l2, l3):
+def calc_ratio_of_xy_to_z(l, count):
+  x = math.sqrt((l[2]+l[1]-l[0]) / (2*count))
+  y = math.sqrt((l[2]+l[0]-l[1]) / (2*count))
+  z = math.sqrt((l[0]+l[1]-l[2]) / (2*count))
+  #print("%e %e %e"%(x,y,z))
+  x_z = x / z
+  y_z = y / z
+
+  return x_z, y_z
+
+def plot(time, x_z, y_z):
   fig = plt.figure()
 
-  plt.plot(time, l1, label='l1')
-  plt.plot(time, l2, label='l2')
-  plt.plot(time, l3, label='l3')
+  plt.plot(time, x_z, label='x_z')
+  plt.plot(time, y_z, label='y_z')
 
-  plt.xscale('log')
-  plt.yscale('log')
+  #plt.xscale('log')
+  #plt.yscale('log')
 
   '''
   plt.xlabel(r'$radius\,[cm]$', fontsize=18)
@@ -100,9 +114,8 @@ if __name__ == '__main__':
   args = sys.argv
 
   time_list = []
-  l1_list = []
-  l2_list = []
-  l3_list = []
+  x_z_list = []
+  y_z_list = []
 
   for time in range(start, end+step, step):
     data = np.loadtxt(dirname % time)
@@ -113,10 +126,11 @@ if __name__ == '__main__':
     vel_cg = np.array([0.,0.,0.])
     pos_cg, vel_cg = calc_center_of_gravity(p)
 
-    l = calc_inertia_tensor(p, pos_cg, vel_cg)
+    l, count = calc_inertia_tensor(p, pos_cg, vel_cg)
     time_list.append(time*1e+04)
-    l1_list.append(l[0])
-    l2_list.append(l[1])
-    l3_list.append(l[2])
 
-  plot(time_list, l1_list, l2_list, l3_list)
+    x_z, y_z = calc_ratio_of_xy_to_z(l, count)
+    x_z_list.append(x_z)
+    y_z_list.append(y_z)
+
+  plot(time_list, x_z_list, y_z_list)
