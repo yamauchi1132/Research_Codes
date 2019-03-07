@@ -22,7 +22,8 @@ max_r = 1e+13 #rsun = 695700e+5;
 def calc_inertia_tensor(p, pos_cg, vel_cg):
   I = np.zeros((3,3))
   ene_neg_r = []
-  count = 0
+  #count = 0
+  row_sum = 0.
   for i in range(len(p)):
     vx = p[i].vel[0] - vel_cg[0]
     vy = p[i].vel[1] - vel_cg[1]
@@ -43,14 +44,16 @@ def calc_inertia_tensor(p, pos_cg, vel_cg):
     r = math.sqrt(r2)
 
     if(r < max_r and ene < 0):
-      count = count + 1
-      I[0,0] += (r2-x2)
-      I[1,1] += (r2-y2)
-      I[2,2] += (r2-z2)
+      #count = count + 1
+      dens = p[i].dens
+      row_sum += dens
+      I[0,0] += dens * (r2-x2)
+      I[1,1] += dens * (r2-y2)
+      I[2,2] += dens * (r2-z2)
 
-      i_01 = -(x * y)
-      i_02 = -(x * z)
-      i_12 = -(y * z)
+      i_01 = -dens * (x * y)
+      i_02 = -dens * (x * z)
+      i_12 = -dens * (y * z)
 
       I[0,1] += i_01
       I[1,0] += i_01
@@ -76,7 +79,7 @@ def calc_inertia_tensor(p, pos_cg, vel_cg):
   ##############################
   l_sort = np.sort(l)
   
-  return l_sort, count
+  return l_sort, row_sum
 
 def calc_ratio_of_xy_to_z(l, count):
   x = math.sqrt((l[2]+l[1]-l[0]) / (2*count))
