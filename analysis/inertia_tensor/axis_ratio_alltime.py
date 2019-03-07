@@ -7,8 +7,8 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 from common import *
 
-start, end, step = 600, 800, 100
-dirname = '../data/sph_t%04d.dat'
+start, end, step = 100, 1100, 100
+dirname = '/lustre/jh180021l/k26002/sph_yamauchi/snap_unbound/snap_unbound_10.0Msun_4.0Rsun_pori1.5_rp1.0R_vinf1.00e+06/sph_t%04d.dat'
 
 '''
 start, end, step = 100, 800, 100
@@ -64,7 +64,7 @@ def calc_inertia_tensor(p, pos_cg, vel_cg):
   l, P = np.linalg.eig(I)
   #print(l)
   #print(P)
-  DI = np.linalg.inv(P) @ I @ P
+  #DI = np.linalg.inv(P) @ I @ P
   #print(DI)
   #print("\n")
   ######## CHECK ##############
