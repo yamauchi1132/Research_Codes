@@ -136,4 +136,8 @@ if __name__ == '__main__':
     x_z_list.append(x_z)
     y_z_list.append(y_z)
 
-  plot(time_list, x_z_list, y_z_list)
+  f = open('axix_1.0.data', 'w')
+  for i in range(len(time_list)):
+    f.write("%e %e %e\n"%(time_list[i]-(start*1e+4), x_z_list[i], y_z_list[i]))
+  f.close()
+  #plot(time_list, x_z_list, y_z_list)
