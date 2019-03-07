@@ -136,7 +136,8 @@ if __name__ == '__main__':
     x_z_list.append(x_z)
     y_z_list.append(y_z)
 
-  f = open('axix_1.0.data', 'w')
+  f = open('axis_1.0.data', 'w')
+  #f = open('axis_1.3.data', 'w')
   for i in range(len(time_list)):
     f.write("%e %e %e\n"%(time_list[i]-(start*1e+4), x_z_list[i], y_z_list[i]))
   f.close()
