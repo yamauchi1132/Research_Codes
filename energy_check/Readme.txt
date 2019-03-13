@@ -1,11 +1,10 @@
-Check mechanical energy  
+力学的エネルギーのテェックプログラム
 
-you can run this program as follow.
-
+以下のようにして実行できます。
 python energy_check.py data1 data2 time.log (timestep) #
 
-Data1 is initial data such as sph_t0000.dat. Data2 is final data. 
-In Data 2, the distance between two stars is as same as the distance in Data 1
-Timestep, 3th argument, is the time data2 is made.
-Data1, data2, and time.log is necessary arguments file but timestep is option
-If no timestep argument, timestep will be set as final time on the last row of the time.log automatically.
+data1は初期データでsph_t0000.datです。data2は最後のデータで初期位置と対称となる位置でのデータです。
+time.logも必要です。
+Timestepはオプションで基本的には指定しなくて大丈夫です。
+
+energy_chech.pyのview==1とするとエネルギー誤差の時間変動のグラフが描かれます。view==0とすると描かれません。

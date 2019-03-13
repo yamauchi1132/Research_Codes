@@ -1,10 +1,12 @@
-Make polytoropic condition 
+ポリトロープ球の作成プログラム
 
-you need to edit user_define.hpp to set parameters.
-you can run this program as follow.
-
+user_define.hpp にあるパラメータに値を入れてください。
+以下のようにして実行すると、入れた値のポリトロープ球が作成されます。
 ./polytropic_condition.out 
 
-Name of output data file means,
+実行すると以下のようなファイルが作成されます。
 ParticleNumber_Mass_Radi_PoriNum
+ParticleNumberは粒子数、Massは質量、Radiは半径、Porinumはポリトロープ指数です。
+
+このファイルの中に、.dataと.headファイルが作成されています。
 

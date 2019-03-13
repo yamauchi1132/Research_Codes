@@ -1,21 +1,31 @@
-Setting two body initail condition 
+初期条件作成プログラム
 
-you need to edit user_difine.hpp to set parameters.
-you can run this program as follow.
+user_define.hppでパラメータ値を設定してください。設定すべきパラメータは以下の通りです。
+m1 星１の質量
+r1 星１の半径;
+pori_n1 星１のポリトロープ指数
 
-./two_body_initial.out data1 (if two of sphere are completely same : case1)   
-./two_body_initial.out data1 data2  (if two of sphere are not same : case2)   
+m2 星２の質量
+r2 星２の半径
+pori_n2 星２のポロトロープ指数
 
+r_mul 近点距離　r_mul*(R_1+R_2)のr_mulを記入
+v_rel_inf 無限遠での相対速度
+r_rel 初期位置における２つの星の距離
 
-Be careful when you input two different argument files (case2).
-Don't reverse data1 and data2.
-Data1 must have the data of sphere1, and data2 have the data of sphere2.
-So you must edit m1 r1 pori_num1 m2 r2 pori_num2 in user_define.hpp so that there is no contradiction.
-That is,
+以下のようにしてプログラムを実行できます。
+
+./two_body_initial.out data1
+
+ここでdata1は緩和されたポリトロープ球の粒子データです。
+実行されて作成されたファイルの中にデータがあります。
+
+###############################################################
+もし２つのポリトロープ球が異なる場合は、
+./two_body_initial.out data1 data2
+とすることで実行できます。この時data1はuser_define.hppのm1,r1,pori_num1でのポリトロープ球、data2はm2,r2,pori_num2でのポリトロープ球です。
 ./two_body_initial.out data2 data1
-is not correct and will be a strange results.
-
-Data file name means,
-data _ ParticleNumbier _ MassOfM1 _ RadiOfR1_PoriNum1_MassOfM2 _ RadiOfR2 _ PoriNum2_Rp(C*(R1+R2))_VelRelinf
+と実行するとうまくできません。
+##############################################################
 
 

@@ -1,9 +1,10 @@
-Changing polytropic sphere scale 
+異なった物理量をもつポリトロープ球を作成するプログラム
 
-you need to edit user_define.hpp to set parameters.
-you can run this program as follow.
+user_define.hppのパラメータ値を編集してください。
+m_mul,r_mul変換後の星の質量、半径です。pori_numはポリトロープ指数です。
+以下のようにプログラムを実行できます。
 
 ./change_scale.out data  
 
-Argument data is polytropic sphere data which have been already damped.
-This data must have values of 1 M_sun, 1 R_sun, and 1.5 or 2.5 polytropic number.
+dataは1M_sun, 1R_sunでポリトロープ指数は1.5もしくは2.5である緩和ずみにポリトロープ球の粒子データです。
+
