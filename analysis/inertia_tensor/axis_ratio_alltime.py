@@ -45,15 +45,15 @@ def calc_inertia_tensor(p, pos_cg, vel_cg):
 
     if(r < max_r and ene < 0):
       #count = count + 1
-      dens = p[i].dens
-      row_sum += dens
-      I[0,0] += dens * (r2-x2)
-      I[1,1] += dens * (r2-y2)
-      I[2,2] += dens * (r2-z2)
+      #dens = p[i].dens
+      #row_sum += dens
+      I[0,0] += (r2-x2)
+      I[1,1] += (r2-y2)
+      I[2,2] += (r2-z2)
 
-      i_01 = -dens * (x * y)
-      i_02 = -dens * (x * z)
-      i_12 = -dens * (y * z)
+      i_01 = -(x * y)
+      i_02 = -(x * z)
+      i_12 = -(y * z)
 
       I[0,1] += i_01
       I[1,0] += i_01
@@ -82,9 +82,9 @@ def calc_inertia_tensor(p, pos_cg, vel_cg):
   return l_sort, row_sum
 
 def calc_ratio_of_xy_to_z(l, count):
-  x = math.sqrt((l[2]+l[1]-l[0]) / (2*count))
-  y = math.sqrt((l[2]+l[0]-l[1]) / (2*count))
-  z = math.sqrt((l[0]+l[1]-l[2]) / (2*count))
+  x = math.sqrt((l[2]+l[1]-l[0]) / 2)
+  y = math.sqrt((l[2]+l[0]-l[1]) / 2)
+  z = math.sqrt((l[0]+l[1]-l[2]) / 2)
   #print("%e %e %e"%(x,y,z))
   x_z = x / z
   y_z = y / z
@@ -136,9 +136,9 @@ if __name__ == '__main__':
     x_z_list.append(x_z)
     y_z_list.append(y_z)
 
-  f = open('axis_1.0.data', 'w')
+  # f = open('axis_1.0.data', 'w')
   #f = open('axis_1.3.data', 'w')
-  for i in range(len(time_list)):
-    f.write("%e %e %e\n"%(time_list[i]-(start*1e+4), x_z_list[i], y_z_list[i]))
-  f.close()
-  #plot(time_list, x_z_list, y_z_list)
+  # for i in range(len(time_list)):
+    # f.write("%e %e %e\n"%(time_list[i]-(start*1e+4), x_z_list[i], y_z_list[i]))
+  # f.close()
+  plot(time_list, x_z_list, y_z_list)
