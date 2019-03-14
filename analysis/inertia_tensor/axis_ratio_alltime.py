@@ -86,15 +86,15 @@ def calc_ratio_of_xy_to_z(l, count):
   y = math.sqrt((l[2]+l[0]-l[1]) / 2)
   z = math.sqrt((l[0]+l[1]-l[2]) / 2)
   #print("%e %e %e"%(x,y,z))
-  x_z = x / z
-  y_z = y / z
+  z_x = z / x
+  z_y = z / y
 
-  return x_z, y_z
+  return z_x, z_y
 
-def plot(time, x_z, y_z):
+def plot(time, z_x, z_y):
   fig = plt.figure()
 
-  plt.plot(time, x_z, label='x_z')
+  plt.plot(time, z_x, label='x_z')
   plt.plot(time, y_z, label='y_z')
 
   #plt.xscale('log')
@@ -117,8 +117,8 @@ if __name__ == '__main__':
   args = sys.argv
 
   time_list = []
-  x_z_list = []
-  y_z_list = []
+  z_x_list = []
+  z_y_list = []
 
   for time in range(start, end+step, step):
     data = np.loadtxt(dirname % time)
@@ -132,13 +132,13 @@ if __name__ == '__main__':
     l, count = calc_inertia_tensor(p, pos_cg, vel_cg)
     time_list.append(time*1e+04)
 
-    x_z, y_z = calc_ratio_of_xy_to_z(l, count)
-    x_z_list.append(x_z)
-    y_z_list.append(y_z)
+    z_x, z_z = calc_ratio_of_xy_to_z(l, count)
+    z_x_list.append(z_x)
+    z_y_list.append(z_y)
 
   # f = open('axis_1.0.data', 'w')
   #f = open('axis_1.3.data', 'w')
   # for i in range(len(time_list)):
     # f.write("%e %e %e\n"%(time_list[i]-(start*1e+4), x_z_list[i], y_z_list[i]))
   # f.close()
-  plot(time_list, x_z_list, y_z_list)
+  plot(time_list, z_x_list, z_y_list)
