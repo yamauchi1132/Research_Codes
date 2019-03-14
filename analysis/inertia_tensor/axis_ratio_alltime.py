@@ -132,7 +132,7 @@ if __name__ == '__main__':
     l, count = calc_inertia_tensor(p, pos_cg, vel_cg)
     time_list.append(time*1e+04)
 
-    z_x, z_z = calc_ratio_of_xy_to_z(l, count)
+    z_x, z_y = calc_ratio_of_xy_to_z(l, count)
     z_x_list.append(z_x)
     z_y_list.append(z_y)
 
