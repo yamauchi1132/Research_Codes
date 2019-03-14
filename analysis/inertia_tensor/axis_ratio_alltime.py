@@ -94,8 +94,8 @@ def calc_ratio_of_xy_to_z(l, count):
 def plot(time, z_x, z_y):
   fig = plt.figure()
 
-  plt.plot(time, z_x, label='x_z')
-  plt.plot(time, y_z, label='y_z')
+  plt.plot(time, z_x, label='z_x')
+  plt.plot(time, z_y, label='z_y')
 
   #plt.xscale('log')
   #plt.yscale('log')
