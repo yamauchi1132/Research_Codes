@@ -17,7 +17,7 @@ dirname = '../../run1/snap_unbound_10.0Msun_4.0Rsun_pori1.5_rp1.0R_vinf1.00e+0\
 #start, end, step = 600, 1200, 100
 #dirname = '../../run2/snap_unbound_10.0Msun_4.0Rsun_pori1.5_rp1.2R_vinf1.00e+06/sph_t%04d.dat'
 '''
-max_r = 1e+13 #rsun = 695700e+5;
+max_r = 1e+12 #rsun = 695700e+5;
 
 def calc_inertia_tensor(p, pos_cg, vel_cg):
   I = np.zeros((3,3))
