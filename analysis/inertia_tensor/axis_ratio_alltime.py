@@ -49,13 +49,13 @@ def calc_inertia_tensor(p, pos_cg, vel_cg):
       #dens = p[i].dens
       #row_sum += dens
 
-      I[0,0] += mass * (r2-x2)
-      I[1,1] += mass * (r2-y2)
-      I[2,2] += mass * (r2-z2)
+      I[0,0] += (r2-x2)
+      I[1,1] += (r2-y2)
+      I[2,2] += (r2-z2)
 
-      i_01 = -mass * (x * y)
-      i_02 = -mass * (x * z)
-      i_12 = -mass * (y * z)
+      i_01 = -(x * y)
+      i_02 = -(x * z)
+      i_12 = -(y * z)
 
       I[0,1] += i_01
       I[1,0] += i_01
@@ -84,9 +84,9 @@ def calc_inertia_tensor(p, pos_cg, vel_cg):
   return l_sort, mass
 
 def calc_ratio_of_xy_to_z(l, mass):
-  x = math.sqrt((l[2]+l[1]-l[0]) / 2*mass)
-  y = math.sqrt((l[2]+l[0]-l[1]) / 2*mass)
-  z = math.sqrt((l[0]+l[1]-l[2]) / 2*mass)
+  x = math.sqrt((l[2]+l[1]-l[0]) / 2)
+  y = math.sqrt((l[2]+l[0]-l[1]) / 2)
+  z = math.sqrt((l[0]+l[1]-l[2]) / 2)
   #print("%e %e %e"%(x,y,z))
   z_x = z / x
   z_y = z / y
