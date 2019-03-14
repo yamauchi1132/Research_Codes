@@ -136,9 +136,9 @@ if __name__ == '__main__':
     z_x_list.append(z_x)
     z_y_list.append(z_y)
 
-  # f = open('axis_1.0.data', 'w')
-  #f = open('axis_1.3.data', 'w')
-  # for i in range(len(time_list)):
-    # f.write("%e %e %e\n"%(time_list[i]-(start*1e+4), x_z_list[i], y_z_list[i]))
-  # f.close()
-  plot(time_list, z_x_list, z_y_list)
+  f = open('axis_1.0.data', 'w')
+  # f = open('axis_1.3.data', 'w')
+  for i in range(len(time_list)):
+    f.write("%e %e %e\n"%(time_list[i]-(start*1e+4), x_z_list[i], y_z_list[i]))
+  f.close()
+  # plot(time_list, z_x_list, z_y_list)
