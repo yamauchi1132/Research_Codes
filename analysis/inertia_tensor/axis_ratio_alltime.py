@@ -24,6 +24,7 @@ def calc_inertia_tensor(p, pos_cg, vel_cg):
   ene_neg_r = []
   #count = 0
   row_sum = 0.
+  mass = p[0].mass
   for i in range(len(p)):
     vx = p[i].vel[0] - vel_cg[0]
     vy = p[i].vel[1] - vel_cg[1]
@@ -47,13 +48,14 @@ def calc_inertia_tensor(p, pos_cg, vel_cg):
       #count = count + 1
       #dens = p[i].dens
       #row_sum += dens
-      I[0,0] += (r2-x2)
-      I[1,1] += (r2-y2)
-      I[2,2] += (r2-z2)
 
-      i_01 = -(x * y)
-      i_02 = -(x * z)
-      i_12 = -(y * z)
+      I[0,0] += mass * (r2-x2)
+      I[1,1] += mass * (r2-y2)
+      I[2,2] += mass * (r2-z2)
+
+      i_01 = -mass * (x * y)
+      i_02 = -mass * (x * z)
+      i_12 = -mass * (y * z)
 
       I[0,1] += i_01
       I[1,0] += i_01
@@ -79,12 +81,12 @@ def calc_inertia_tensor(p, pos_cg, vel_cg):
   ##############################
   l_sort = np.sort(l)
   
-  return l_sort, row_sum
+  return l_sort, mass
 
-def calc_ratio_of_xy_to_z(l, count):
-  x = math.sqrt((l[2]+l[1]-l[0]) / 2)
-  y = math.sqrt((l[2]+l[0]-l[1]) / 2)
-  z = math.sqrt((l[0]+l[1]-l[2]) / 2)
+def calc_ratio_of_xy_to_z(l, mass):
+  x = math.sqrt((l[2]+l[1]-l[0]) / 2*mass)
+  y = math.sqrt((l[2]+l[0]-l[1]) / 2*mass)
+  z = math.sqrt((l[0]+l[1]-l[2]) / 2*mass)
   #print("%e %e %e"%(x,y,z))
   z_x = z / x
   z_y = z / y
@@ -129,16 +131,16 @@ if __name__ == '__main__':
     vel_cg = np.array([0.,0.,0.])
     pos_cg, vel_cg = calc_center_of_gravity(p)
 
-    l, count = calc_inertia_tensor(p, pos_cg, vel_cg)
+    l, mass = calc_inertia_tensor(p, pos_cg, vel_cg)
     time_list.append(time*1e+04)
 
-    z_x, z_y = calc_ratio_of_xy_to_z(l, count)
+    z_x, z_y = calc_ratio_of_xy_to_z(l, mass)
     z_x_list.append(z_x)
     z_y_list.append(z_y)
 
   f = open('axis_1.0.data', 'w')
   # f = open('axis_1.3.data', 'w')
   for i in range(len(time_list)):
-    f.write("%e %e %e\n"%(time_list[i]-(start*1e+4), x_z_list[i], y_z_list[i]))
+    f.write("%e %e %e\n"%(time_list[i]-(start*1e+4), z_x_list[i], z_y_list[i]))
   f.close()
   # plot(time_list, z_x_list, z_y_list)
