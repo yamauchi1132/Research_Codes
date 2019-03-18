@@ -17,13 +17,14 @@ dirname = '../../run1/snap_unbound_10.0Msun_4.0Rsun_pori1.5_rp1.0R_vinf1.00e+0\
 #start, end, step = 600, 1200, 100
 #dirname = '../../run2/snap_unbound_10.0Msun_4.0Rsun_pori1.5_rp1.2R_vinf1.00e+06/sph_t%04d.dat'
 '''
-max_r = 1e+13 #rsun = 695700e+5;
+max_r = 1e+12 #rsun = 695700e+5;
 
 def calc_inertia_tensor(p, pos_cg, vel_cg):
   I = np.zeros((3,3))
   ene_neg_r = []
   #count = 0
   row_sum = 0.
+  mass = p[0].mass
   for i in range(len(p)):
     vx = p[i].vel[0] - vel_cg[0]
     vy = p[i].vel[1] - vel_cg[1]
@@ -45,15 +46,16 @@ def calc_inertia_tensor(p, pos_cg, vel_cg):
 
     if(r < max_r and ene < 0):
       #count = count + 1
-      dens = p[i].dens
-      row_sum += dens
-      I[0,0] += dens * (r2-x2)
-      I[1,1] += dens * (r2-y2)
-      I[2,2] += dens * (r2-z2)
+      #dens = p[i].dens
+      #row_sum += dens
 
-      i_01 = -dens * (x * y)
-      i_02 = -dens * (x * z)
-      i_12 = -dens * (y * z)
+      I[0,0] += (r2-x2)
+      I[1,1] += (r2-y2)
+      I[2,2] += (r2-z2)
+
+      i_01 = -(x * y)
+      i_02 = -(x * z)
+      i_12 = -(y * z)
 
       I[0,1] += i_01
       I[1,0] += i_01
@@ -79,23 +81,23 @@ def calc_inertia_tensor(p, pos_cg, vel_cg):
   ##############################
   l_sort = np.sort(l)
   
-  return l_sort, row_sum
+  return l_sort, mass
 
-def calc_ratio_of_xy_to_z(l, count):
-  x = math.sqrt((l[2]+l[1]-l[0]) / (2*count))
-  y = math.sqrt((l[2]+l[0]-l[1]) / (2*count))
-  z = math.sqrt((l[0]+l[1]-l[2]) / (2*count))
+def calc_ratio_of_xy_to_z(l, mass):
+  x = math.sqrt((l[2]+l[1]-l[0]) / 2)
+  y = math.sqrt((l[2]+l[0]-l[1]) / 2)
+  z = math.sqrt((l[0]+l[1]-l[2]) / 2)
   #print("%e %e %e"%(x,y,z))
-  x_z = x / z
-  y_z = y / z
+  z_x = z / x
+  z_y = z / y
 
-  return x_z, y_z
+  return z_x, z_y
 
-def plot(time, x_z, y_z):
+def plot(time, z_x, z_y):
   fig = plt.figure()
 
-  plt.plot(time, x_z, label='x_z')
-  plt.plot(time, y_z, label='y_z')
+  plt.plot(time, z_x, label='z_x')
+  plt.plot(time, z_y, label='z_y')
 
   #plt.xscale('log')
   #plt.yscale('log')
@@ -117,8 +119,8 @@ if __name__ == '__main__':
   args = sys.argv
 
   time_list = []
-  x_z_list = []
-  y_z_list = []
+  z_x_list = []
+  z_y_list = []
 
   for time in range(start, end+step, step):
     data = np.loadtxt(dirname % time)
@@ -129,16 +131,16 @@ if __name__ == '__main__':
     vel_cg = np.array([0.,0.,0.])
     pos_cg, vel_cg = calc_center_of_gravity(p)
 
-    l, count = calc_inertia_tensor(p, pos_cg, vel_cg)
+    l, mass = calc_inertia_tensor(p, pos_cg, vel_cg)
     time_list.append(time*1e+04)
 
-    x_z, y_z = calc_ratio_of_xy_to_z(l, count)
-    x_z_list.append(x_z)
-    y_z_list.append(y_z)
+    z_x, z_y = calc_ratio_of_xy_to_z(l, mass)
+    z_x_list.append(z_x)
+    z_y_list.append(z_y)
 
   f = open('axis_1.0.data', 'w')
-  #f = open('axis_1.3.data', 'w')
+  # f = open('axis_1.3.data', 'w')
   for i in range(len(time_list)):
-    f.write("%e %e %e\n"%(time_list[i]-(start*1e+4), x_z_list[i], y_z_list[i]))
+    f.write("%e %e %e\n"%(time_list[i]-(start*1e+4), z_x_list[i], z_y_list[i]))
   f.close()
-  #plot(time_list, x_z_list, y_z_list)
+  # plot(time_list, z_x_list, z_y_list)
