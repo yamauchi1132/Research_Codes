@@ -6,7 +6,6 @@ import math
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from common import *
-import matplotlib.ticker as ptick ##これが必要！
 
 dirname = "data/sph_t0000.dat"
 
@@ -81,8 +80,7 @@ def plot(r1, omega1, r2, omega2):
   mpl.rcParams['axes.xmargin'] = 0
   mpl.rcParams['axes.ymargin'] = 0
   plt.tight_layout()
-  ax.xaxis.set_major_formatter(ptick.ScalarFormatter(useMathText=True)) 
-
+  
   # plt.savefig("r_omega.pdf", transparent=True, dpi=300, bbox_inches = 'tight', pad_inches = 0)
   plt.show()
   plt.close()
@@ -114,5 +112,10 @@ if __name__ == '__main__':
 
   r1, omega1, r2, omega2 = calc_r_omega(p1, p2, pos1_cg, vel1_cg, pos2_cg, vel2_cg)
 
-  plot(r1, omega1, r2, omega2)
+  #plot(r1, omega1, r2, omega2)
+  f = open('r_omega.data', 'w')
+  # f = open('axis_1.3.data', 'w')
+  for i in range(len(r1)):
+    f.write("%e %e %e %e"%(r1[i], omega1[i], r2[i], omega2[i]))
+  f.close()
 
