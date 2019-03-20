@@ -8,6 +8,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 from common import *
 
+dirname = "data/sph_t1100.dat"
 n = 1.5
 max_r = 1e+12 #rsun = 695700e+5;
 
@@ -89,7 +90,7 @@ def plot(r, temp):
 
 if __name__ == '__main__':
   args = sys.argv
-  data = np.loadtxt("data/sph_t1100.dat")
+  data = np.loadtxt(dirname)
 
   p = [Particle() for i in range(len(data))]
   readfile(data, p)

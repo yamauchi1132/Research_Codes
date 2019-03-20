@@ -30,6 +30,7 @@ class Particle:
     self.dnuc = 0.
     self.cmps = [0. for i in range(18)]
     self.r_cg = 0.
+    self.temp = 0.
 
 def readfile(data, p):
   for i in range(len(data)):
